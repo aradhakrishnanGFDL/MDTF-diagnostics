@@ -5,6 +5,5 @@ jobs:
     runs-on: ubuntu-latest
     name: A job to print mdtf version
     steps:
-    - name: Hello world action step
-      id: hello
+    - name: build image
       uses: aradhakrishnanGFDL/MDTF-diagnostics@dev
