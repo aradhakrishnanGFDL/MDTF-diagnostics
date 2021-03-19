@@ -1,5 +1,4 @@
 on: [push]
-
 jobs:
   mdtf_docker_test:
     runs-on: ubuntu-latest
