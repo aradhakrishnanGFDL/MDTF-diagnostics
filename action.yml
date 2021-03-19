@@ -1,0 +1,6 @@
+# action.yml
+name: 'MDTF docker test'
+description: 'Run mdtf in a container and get me the version that's running'
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
