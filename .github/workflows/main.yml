@@ -5,4 +5,5 @@ jobs:
     name: A job to print mdtf version
     steps:
     - name: build image
+      id: mdtf_docker_test
       uses: aradhakrishnanGFDL/MDTF-diagnostics@dev
