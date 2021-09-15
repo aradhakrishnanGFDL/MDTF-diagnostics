@@ -42,6 +42,8 @@ jobs:
           #iam-role-name: github-actions-role-a # optional, requires additional permissions
           
   build:
+    name: MDTF core tests
+    needs: start-runner
     runs-on: ${{ needs.start-runner.outputs.label }} # run the job on the newly created runner
   #  continue-on-error: ${{ matrix.experimental }}
     strategy:
