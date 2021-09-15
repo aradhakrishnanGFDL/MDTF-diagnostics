@@ -1,9 +1,0 @@
-on: [push]
-
-jobs:
-  mdtf_docker_test:
-    runs-on: ubuntu-latest
-    name: A job to print mdtf version
-    steps:
-    - name: build image
-      uses: aradhakrishnanGFDL/MDTF-diagnostics@dev
