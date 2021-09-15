@@ -43,10 +43,10 @@ jobs:
           
   build:
     runs-on: ${{ needs.start-runner.outputs.label }} # run the job on the newly created runner
-    continue-on-error: ${{ matrix.experimental }}
+  #  continue-on-error: ${{ matrix.experimental }}
     strategy:
       matrix:
-        os: [ubuntu-latest, macos-latest]
+        os: [ubuntu-latest]
         conda-root: [/usr/share/miniconda3, /Users/runner/miniconda3]
         json-file: ["tests/github_actions_test_ubuntu_set1.jsonc","tests/github_actions_test_macos_set1.jsonc"]
         json-file-set2: ["tests/github_actions_test_ubuntu_set2.jsonc", "tests/github_actions_test_macos_set2.jsonc"]
@@ -62,14 +62,6 @@ jobs:
             json-file-set2: "tests/github_actions_test_macos_set2.jsonc"
           - os: ubuntu-latest
             json-file-set3: "tests/github_actions_test_macos_set3.jsonc"
-          - os: macos-latest
-            conda-root: /usr/share/miniconda3
-          - os: macos-latest
-            json-file: "tests/github_actions_test_ubuntu_set1.jsonc"
-          - os: macos-latest
-            json-file-set2: "tests/github_actions_test_ubuntu_set2.jsonc"
-          - os: macos-latest
-            json-file-set3: "tests/github_actions_test_ubuntu_set3.jsonc"
           - conda-root: /usr/share/miniconda3
             json-file: "tests/github_actions_test_macos_set1.jsonc"
           - conda-root: /Users/runner/minconda3
@@ -93,11 +85,6 @@ jobs:
     - name: Verify miniconda
       run: |
         conda info -a
-    - name: Install XQuartz if macOS
-      if: ${{ matrix.os == 'macos-latest' && matrix.conda-root == '/Users/runner/miniconda3' }}
-      run: |
-        echo "Installing XQuartz"
-        brew install --cask xquartz
     - name: Set environment variables
       run: |
         echo "POD_OUTPUT=$(echo $PWD/../wkdir/GFDL.Synthetic)" >> $GITHUB_ENV
