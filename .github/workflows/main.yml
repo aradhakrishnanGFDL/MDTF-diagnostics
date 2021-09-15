@@ -6,4 +6,4 @@ jobs:
     name: A job to print mdtf version
     steps:
     - name: build image
-      uses: aradhakrishnanGFDL/MDTF-diagnostics@dev
+      uses: aradhakrishnanGFDL/MDTF-diagnostics@main
