@@ -1,7 +1,7 @@
 # This file builds and runs a lightweight version of the MDTF test suite.
 # Note that the tests assess functionality of the diagnostics,
 # and do not evaluate data or scientific content.
-name: MDTF_test
+name: MDTF_test_with_aws
 
 on:
   push:
@@ -16,6 +16,31 @@ defaults:
   run:
     shell: bash -l {0}
 jobs:
+  start-runner:
+    name: Start self-hosted EC2 runner
+    runs-on: ubuntu-latest
+    outputs:
+      label: ${{ steps.start-ec2-runner.outputs.label }}
+      ec2-instance-id: ${{ steps.start-ec2-runner.outputs.ec2-instance-id }}
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Start EC2 runner
+        id: start-ec2-runner
+        uses: machulav/ec2-github-runner@v2
+        with:
+          mode: start
+          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          ec2-image-id: ami-092a9e946def5be32
+          ec2-instance-type: t2.micro
+          subnet-id: subnet-003faaf9f1e386979
+          security-group-id: sg-016e543200ed56a0f
+          #iam-role-name: github-actions-role-a # optional, requires additional permissions
+
   build:
     runs-on: ${{matrix.os}}
     continue-on-error: ${{ matrix.experimental }}
@@ -157,3 +182,25 @@ jobs:
         echo "${PWD}"
         conda activate _MDTF_base
         python -m unittest discover
+        
+stop-runner:
+    name: Stop self-hosted EC2 runner
+    needs:
+      - start-runner # required to get output from the start-runner job
+      - do-the-job # required to wait when the main job is done
+    runs-on: ubuntu-latest
+    if: ${{ always() }} # required to stop the runner even if the error happened in the previous jobs
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+      - name: Stop EC2 runner
+        uses: machulav/ec2-github-runner@v2
+        with:
+          mode: stop
+          github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
+          label: ${{ needs.start-runner.outputs.label }}
+          ec2-instance-id: ${{ needs.start-runner.outputs.ec2-instance-id }}
