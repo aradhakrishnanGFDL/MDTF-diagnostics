@@ -87,6 +87,10 @@ jobs:
     - name: Verify miniconda
       run: |
         conda info -a
+        conda config --show
+        which conda
+        which miniconda3
+        
     - name: Set environment variables
       run: |
         echo "POD_OUTPUT=$(echo $PWD/../wkdir/GFDL.Synthetic)" >> $GITHUB_ENV
