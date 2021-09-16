@@ -49,7 +49,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        conda-root: [/actions-runner/_work/MDTF-diagnostics/MDTF-diagnostics/3/condabin/conda]#, /usr/share/miniconda3, /Users/runner/miniconda3]
+        conda-root: [/actions-runner/_work/MDTF-diagnostics/MDTF-diagnostics/3]#, /usr/share/miniconda3, /Users/runner/miniconda3]
         action-conda-root: [/actions-runner/_work/MDTF-diagnostics/MDTF-diagnostics/3/condabin/conda]
         json-file: ["tests/github_actions_test_ubuntu_set1.jsonc","tests/github_actions_test_macos_set1.jsonc"]
         json-file-set2: ["tests/github_actions_test_ubuntu_set2.jsonc", "tests/github_actions_test_macos_set2.jsonc"]
