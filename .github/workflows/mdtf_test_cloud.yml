@@ -35,9 +35,8 @@ jobs:
         with:
           mode: start
           github-token: ${{ secrets.GH_PERSONAL_ACCESS_TOKEN }}
-          ec2-image-id: ami-092a9e946def5be32
+          ec2-image-id: ami-0d9c66960c53029ef
           ec2-instance-type: t2.xlarge
-          ec2-size: 20GB
           subnet-id: subnet-003faaf9f1e386979
           security-group-id: sg-016e543200ed56a0f
           #iam-role-name: github-actions-role-a # optional, requires additional permissions
