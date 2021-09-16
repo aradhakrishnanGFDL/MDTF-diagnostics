@@ -50,7 +50,7 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         conda-root: [/actions-runner/_work/MDTF-diagnostics/MDTF-diagnostics/3]#, /usr/share/miniconda3, /Users/runner/miniconda3]
-        action-conda-root: [/actions-runner/_work/MDTF-diagnostics/MDTF-diagnostics/3/condabin/conda]
+        action-conda-root: [/actions-runner/_work/MDTF-diagnostics/MDTF-diagnostics/3]
         json-file: ["tests/github_actions_test_ubuntu_set1.jsonc","tests/github_actions_test_macos_set1.jsonc"]
         json-file-set2: ["tests/github_actions_test_ubuntu_set2.jsonc", "tests/github_actions_test_macos_set2.jsonc"]
         json-file-set3: ["tests/github_actions_test_ubuntu_set3.jsonc", "tests/github_actions_test_macos_set3.jsonc"]
