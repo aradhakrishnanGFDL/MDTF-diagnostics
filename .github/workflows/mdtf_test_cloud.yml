@@ -103,7 +103,7 @@ jobs:
         echo "Installing Conda Environments"
         # MDTF-specific setup: install all conda envs
         ##${{matrix.conda-root}}
-        ./src/conda/conda_env_setup.sh --all --conda_root {{matrix.action-conda-root}} 
+        ./src/conda/conda_env_setup.sh --all --conda_root ${{matrix.action-conda-root}} 
     - name: Generate Model Data
       run: |
         cd ../
