@@ -1,4 +1,4 @@
-name: do-the-job
+name: do-the-curl
 on: pull_request
 jobs:
   start-runner:
