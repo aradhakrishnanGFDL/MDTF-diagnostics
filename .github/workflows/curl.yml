@@ -1,5 +1,5 @@
 name: curl-test
-on: pull_request
+on: commit
 jobs:
   start-runner:
     name: Start self-hosted EC2 runner
