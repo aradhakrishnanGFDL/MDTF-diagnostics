@@ -9,12 +9,15 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/first-run-task-definition",
+          "awslogs-group": "/ecs/mdtf-dummy-test",
           "awslogs-region": "us-east-2",
           "awslogs-stream-prefix": "ecs"
         }
       },
-      "entryPoint": [],
+      "entryPoint": [
+        "echo",
+        "hello"
+      ],
       "portMappings": [],
       "command": [],
       "linuxParameters": null,
@@ -31,7 +34,7 @@
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "public.ecr.aws/c6h4h4s8/mdtf/test",
+      "image": "mdtf/test",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
@@ -39,7 +42,7 @@
       "interactive": null,
       "healthCheck": null,
       "essential": true,
-      "links": [],
+      "links": null,
       "hostname": null,
       "extraHosts": null,
       "pseudoTerminal": null,
@@ -48,18 +51,18 @@
       "dockerLabels": null,
       "systemControls": null,
       "privileged": null,
-      "name": "custom"
+      "name": "mdtf-test-a1r"
     }
   ],
   "placementConstraints": [],
-  "memory": "512",
-  "taskRoleArn": null,
+  "memory": "8192",
+  "taskRoleArn": "arn:aws:iam::430073024411:role/ecsTaskExecutionRole",
   "compatibilities": [
     "EC2",
     "FARGATE"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:us-east-2:430073024411:task-definition/first-run-task-definition:1",
-  "family": "first-run-task-definition",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-2:430073024411:task-definition/mdtf-dummy-test:1",
+  "family": "mdtf-dummy-test",
   "requiresAttributes": [
     {
       "targetId": null,
@@ -77,19 +80,13 @@
       "targetId": null,
       "targetType": null,
       "value": null,
-      "name": "com.amazonaws.ecs.capability.ecr-auth"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
       "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
     },
     {
       "targetId": null,
       "targetType": null,
       "value": null,
-      "name": "ecs.capability.execution-role-ecr-pull"
+      "name": "com.amazonaws.ecs.capability.task-iam-role"
     },
     {
       "targetId": null,
@@ -109,7 +106,11 @@
     "FARGATE"
   ],
   "networkMode": "awsvpc",
-  "cpu": "256",
+  "runtimePlatform": {
+    "operatingSystemFamily": "LINUX",
+    "cpuArchitecture": null
+  },
+  "cpu": "4096",
   "revision": 1,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
