@@ -31,7 +31,7 @@
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "430073024411.dkr.ecr.us-east-1.amazonaws.com/wrongkindofdoctor/mdtf-test:latest",
+      "image": "public.ecr.aws/c6h4h4s8/mdtf/dev",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
