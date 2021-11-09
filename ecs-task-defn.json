@@ -31,7 +31,7 @@
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "public.ecr.aws/c6h4h4s8/mdtf/dev",
+      "image": "public.ecr.aws/c6h4h4s8/mdtf/test",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
