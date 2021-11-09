@@ -15,8 +15,6 @@
         }
       },
       "entryPoint": [
-        "echo",
-        "hello"
       ],
       "portMappings": [],
       "command": [],
