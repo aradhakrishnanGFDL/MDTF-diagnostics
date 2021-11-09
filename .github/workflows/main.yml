@@ -11,7 +11,7 @@ on:
       - main
 
 env:
-  AWS_REGION: us-east-1                   # set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: us-east-2                   # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: mdtf/dev        # set this to your Amazon ECR repository name
   ECS_SERVICE: custom-service                # MY_ECS_SERVICE   set this to your Amazon ECS service name
   ECS_CLUSTER: default-mdtf-test1                 # MY_ECS_CLUSTER  set this to your Amazon ECS cluster name
