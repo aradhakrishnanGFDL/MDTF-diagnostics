@@ -11,10 +11,10 @@ on:
       - main
 
 env:
-  AWS_REGION: us-east-2                   # set this to your preferred AWS region, e.g. us-west-1
+  AWS_REGION: us-east-1                  # set this to your preferred AWS region, e.g. us-west-1
   ECR_REPOSITORY: mdtf/test        # set this to your Amazon ECR repository name
   ECS_SERVICE: custom-service                # MY_ECS_SERVICE   set this to your Amazon ECS service name
-  ECS_CLUSTER: mdtf-east2                 # MY_ECS_CLUSTER  set this to your Amazon ECS cluster name
+  ECS_CLUSTER: mdtf-east1                 # MY_ECS_CLUSTER  set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: ecs-task-defn.json # set this to the path to your Amazon ECS task definition
                                                # file, e.g. .aws/task-definition.json
   CONTAINER_NAME: mdtf-test-a1r           # set this to the name of the container in the
@@ -44,7 +44,7 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         env:
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: public.ecr.aws/c6h4h4s8 #######for private it works here${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
           # Build a docker container and
