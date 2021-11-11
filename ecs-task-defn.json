@@ -9,17 +9,14 @@
         "logDriver": "awslogs",
         "secretOptions": null,
         "options": {
-          "awslogs-group": "/ecs/mdtf-dummy-test",
-          "awslogs-region": "us-east-2",
+          "awslogs-group": "/ecs/mdtf-test-a1r",
+          "awslogs-region": "us-east-1",
           "awslogs-stream-prefix": "ecs"
         }
       },
-      "entryPoint": [
-        "echo",
-        "hello"
-      ],
+      "entryPoint": null,
       "portMappings": [],
-      "command": [],
+      "command": null,
       "linuxParameters": null,
       "cpu": 0,
       "environment": [],
@@ -34,7 +31,7 @@
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "430073024411.dkr.ecr.us-east-2.amazonaws.com/mdtf/test:705992c313cd0af6a386cae1f008a16f6d4b87aa",
+      "image": "public.ecr.aws/c6h4h4s8/mdtf/mdtf-test",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
@@ -51,7 +48,7 @@
       "dockerLabels": null,
       "systemControls": null,
       "privileged": null,
-      "name": "mdtf-test-a1r"
+      "name": "mdtf-test"
     }
   ],
   "placementConstraints": [],
@@ -61,8 +58,8 @@
     "EC2",
     "FARGATE"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:us-east-2:430073024411:task-definition/mdtf-vtest:2",
-  "family": "mdtf-vtest",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:430073024411:task-definition/mdtf-test-a1r:1",
+  "family": "mdtf-test-a1r",
   "requiresAttributes": [
     {
       "targetId": null,
@@ -80,7 +77,7 @@
       "targetId": null,
       "targetType": null,
       "value": null,
-      "name": "com.amazonaws.ecs.capability.ecr-auth"
+      "name": "ecs.capability.efsAuth"
     },
     {
       "targetId": null,
@@ -92,13 +89,19 @@
       "targetId": null,
       "targetType": null,
       "value": null,
+      "name": "ecs.capability.efs"
+    },
+    {
+      "targetId": null,
+      "targetType": null,
+      "value": null,
       "name": "com.amazonaws.ecs.capability.task-iam-role"
     },
     {
       "targetId": null,
       "targetType": null,
       "value": null,
-      "name": "ecs.capability.execution-role-ecr-pull"
+      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.25"
     },
     {
       "targetId": null,
@@ -119,9 +122,42 @@
   ],
   "networkMode": "awsvpc",
   "cpu": "4096",
-  "revision": 2,
+  "revision": 1,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
-  "volumes": []
+  "volumes": [
+    {
+      "fsxWindowsFileServerVolumeConfiguration": null,
+      "efsVolumeConfiguration": {
+        "transitEncryptionPort": null,
+        "fileSystemId": "fs-0865edd0cad5495f8",
+        "authorizationConfig": {
+          "iam": "DISABLED",
+          "accessPointId": null
+        },
+        "transitEncryption": "DISABLED",
+        "rootDirectory": "/"
+      },
+      "name": "MDTF-diagnostics-tests",
+      "host": null,
+      "dockerVolumeConfiguration": null
+    },
+    {
+      "fsxWindowsFileServerVolumeConfiguration": null,
+      "efsVolumeConfiguration": {
+        "transitEncryptionPort": null,
+        "fileSystemId": "fs-0554d4762d34fbb98",
+        "authorizationConfig": {
+          "iam": "DISABLED",
+          "accessPointId": null
+        },
+        "transitEncryption": "DISABLED",
+        "rootDirectory": "/"
+      },
+      "name": "MDTF-inputdata",
+      "host": null,
+      "dockerVolumeConfiguration": null
+    }
+  ]
 }
