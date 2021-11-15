@@ -31,7 +31,7 @@
       "memoryReservation": null,
       "volumesFrom": [],
       "stopTimeout": null,
-      "image": "public.ecr.aws/c6h4h4s8/mdtf/mdtf-test",
+      "image": "public.ecr.aws/c6h4h4s8/mdtf/mdtf-test:156ba8deedc50a24c7b74302102e607f4f17a4cf",
       "startTimeout": null,
       "firelensConfiguration": null,
       "dependsOn": null,
@@ -58,7 +58,7 @@
     "EC2",
     "FARGATE"
   ],
-  "taskDefinitionArn": "arn:aws:ecs:us-east-1:430073024411:task-definition/mdtf-test-a1r:1",
+  "taskDefinitionArn": "arn:aws:ecs:us-east-1:430073024411:task-definition/mdtf-test-a1r:5",
   "family": "mdtf-test-a1r",
   "requiresAttributes": [
     {
@@ -77,31 +77,13 @@
       "targetId": null,
       "targetType": null,
       "value": null,
-      "name": "ecs.capability.efsAuth"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
       "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
     },
     {
       "targetId": null,
       "targetType": null,
       "value": null,
-      "name": "ecs.capability.efs"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
       "name": "com.amazonaws.ecs.capability.task-iam-role"
-    },
-    {
-      "targetId": null,
-      "targetType": null,
-      "value": null,
-      "name": "com.amazonaws.ecs.capability.docker-remote-api.1.25"
     },
     {
       "targetId": null,
@@ -121,43 +103,11 @@
     "FARGATE"
   ],
   "networkMode": "awsvpc",
+  "runtimePlatform": null,
   "cpu": "4096",
-  "revision": 1,
+  "revision": 5,
   "status": "ACTIVE",
   "inferenceAccelerators": null,
   "proxyConfiguration": null,
-  "volumes": [
-    {
-      "fsxWindowsFileServerVolumeConfiguration": null,
-      "efsVolumeConfiguration": {
-        "transitEncryptionPort": null,
-        "fileSystemId": "fs-0865edd0cad5495f8",
-        "authorizationConfig": {
-          "iam": "DISABLED",
-          "accessPointId": null
-        },
-        "transitEncryption": "DISABLED",
-        "rootDirectory": "/"
-      },
-      "name": "MDTF-diagnostics-tests",
-      "host": null,
-      "dockerVolumeConfiguration": null
-    },
-    {
-      "fsxWindowsFileServerVolumeConfiguration": null,
-      "efsVolumeConfiguration": {
-        "transitEncryptionPort": null,
-        "fileSystemId": "fs-0554d4762d34fbb98",
-        "authorizationConfig": {
-          "iam": "DISABLED",
-          "accessPointId": null
-        },
-        "transitEncryption": "DISABLED",
-        "rootDirectory": "/"
-      },
-      "name": "MDTF-inputdata",
-      "host": null,
-      "dockerVolumeConfiguration": null
-    }
-  ]
+  "volumes": []
 }
