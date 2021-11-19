@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Deploy to Amazon ECS
+name: Deploy to Amazon ECS,cache-test
 
 on:
   push:
