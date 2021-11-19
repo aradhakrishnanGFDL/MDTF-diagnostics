@@ -32,7 +32,7 @@ ENV CODE_ROOT=/proj/MDTF-diagnostics
 ENV GIT_DIR=.
 COPY ${GIT_DIR}/src ${CODE_ROOT}/src
 COPY ${GIT_DIR}/data ${CODE_ROOT}/data
-#COPY diagnostics ${CODE_ROOT}/diagnostics
+COPY ${GIT_DIR}/diagnostics ${CODE_ROOT}/diagnostics
 COPY ${GIT_DIR}/mdtf_framework.py ${CODE_ROOT}
 COPY ${GIT_DIR}/shared ${CODE_ROOT}/shared
 COPY ${GIT_DIR}/sites ${CODE_ROOT}/sites
