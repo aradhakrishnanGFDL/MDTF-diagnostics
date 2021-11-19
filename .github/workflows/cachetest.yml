@@ -41,7 +41,7 @@ jobs:
         id: login-ecr
         uses: docker/login-action@v1
         with:
-          registry: public.ecr.aws
+          registry: public.ecr.aws/c6h4h4s8 
           username: ${{ secrets.AWS_ACCESS_KEY_ID }}
           password: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         env:
