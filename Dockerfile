@@ -3,6 +3,7 @@ FROM continuumio/miniconda3
 LABEL maintainer="20195932+mdtf"
 LABEL version="alpha-01"
 LABEL description="This is a docker image for the MDTF-diagnostics package"
+ARG BUILDKIT_INLINE_CACHE
 # Disable Prompt During Packages Installation
 #SKIP ARG DEBIAN_FRONTEND=noninteractive
 # Update Ubuntu Software repository
