@@ -51,7 +51,7 @@ jobs:
         uses: whoan/docker-build-with-cache-action@v5
         with:
          registry: public.ecr.aws
-         image_name: c6h4h4s8/mdtf/mdtf-test:latest
+         image_name: c6h4h4s8/mdtf/mdtf-test
          image_tag: latest
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
