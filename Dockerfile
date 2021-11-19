@@ -4,15 +4,15 @@ LABEL maintainer="20195932+mdtf"
 LABEL version="alpha-01"
 LABEL description="This is a docker image for the MDTF-diagnostics package"
 # Disable Prompt During Packages Installation
-ARG DEBIAN_FRONTEND=noninteractive
+#SKIP ARG DEBIAN_FRONTEND=noninteractive
 # Update Ubuntu Software repository
-RUN apt update
+#SKIP RUN apt update
 # Install dependencies
-RUN apt install -y wget
-RUN apt install -y vim
+#SKIP RUN apt install -y wget
+#SKIP RUN apt install -y vim
 # Cleanup
-RUN rm -rf /var/lib/apt/lists/* && \
-    apt clean
+#SKIP RUN rm -rf /var/lib/apt/lists/* && \
+#SKIP     apt clean
 # Install Miniconda3
 # Download the latest shell script
 #SKIP RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
