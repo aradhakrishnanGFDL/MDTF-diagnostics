@@ -1,6 +1,6 @@
-FROM continuumio/miniconda3
+FROM continuumio/miniconda3:master
 # Container Metadata
-LABEL maintainer="20195932+mdtf"
+LABEL maintainer="mdtf"
 LABEL version="alpha-01"
 LABEL description="This is a docker image for the MDTF-diagnostics package"
 ARG BUILDKIT_INLINE_CACHE
@@ -26,7 +26,7 @@ ARG BUILDKIT_INLINE_CACHE
 #SKIP RUN rm -f Miniconda3-latest-Linux-x86_64.sh
 RUN conda info
 RUN conda init bash
-RUN conda install -c conda-forge mamba
+#testRUN conda install -c conda-forge mamba
 # Copy the MDTF-diagnostics package contents from local machine to image
 ENV CODE_ROOT=/proj/MDTF-diagnostics
 ENV GIT_DIR=.
@@ -40,10 +40,10 @@ COPY ${GIT_DIR}/tests ${CODE_ROOT}/tests
 # Install conda environments
 ENV CONDA_ROOT=/opt/conda/
 #ENV CONDA_ENV_DIR=${CONDA_ROOT}/envs
-RUN bash ${CODE_ROOT}/src/conda/conda_env_setup.sh --all --conda_root ${CONDA_ROOT}
+#testRUN bash ${CODE_ROOT}/src/conda/conda_env_setup.sh --all --conda_root ${CONDA_ROOT}
 #    --conda_env_dir ${CONDA_ENV_DIR}
 # Verify installation
 
-COPY ${GIT_DIR}/entrypoint.sh /bin/entrypoint.sh
-RUN chmod 777 /bin/entrypoint.sh
-ENTRYPOINT ["/bin/entrypoint.sh"]
+#testCOPY ${GIT_DIR}/entrypoint.sh /bin/entrypoint.sh
+#testRUN chmod 777 /bin/entrypoint.sh
+#testENTRYPOINT ["/bin/entrypoint.sh"]
