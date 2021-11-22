@@ -39,7 +39,7 @@ jobs:
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
-        uses: aradhakrishnanGFDL/docker-build-with-cache-action@cache-public-ecr-fix #support-aws-ecr-public
+        uses: aradhakrishnanGFDL/docker-build-with-cache-action@master #support-aws-ecr-public
         env:
          ECR_REGISTRY: public.ecr.aws
          IMAGE_TAG: "latest"
