@@ -40,13 +40,17 @@ jobs:
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
         uses: aradhakrishnanGFDL/docker-build-with-cache-action@cache-public-ecr-fix #support-aws-ecr-public
+        env:
+         ECR_REGISTRY: "public.ecr.aws"
+         IMAGE_TAG: "latest"
+         ECS_IMAGE: $ECR_REGISTRY/ECR_REPOSITORY:$env.IMAGE_TAG
         with:
-         registry: public.ecr.aws
+         registry: $ECR_REGISTRY
          username: "${{ secrets.AWS_ACCESS_KEY_ID }}"  
          password: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"  
          image_name: c6h4h4s8/mdtf/mdtf-test
          push_image_and_stages: true
-         image_tag: latest
+         image_tag: $IMAGE_TAG
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
@@ -54,7 +58,7 @@ jobs:
         with:
           task-definition: ${{ env.ECS_TASK_DEFINITION }}
           container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ steps.build-image.outputs.image }}
+          image: ${{ env.ECS_IMAGE}}
 
       - name: Deploy Amazon ECS task definition
         uses: aws-actions/amazon-ecs-deploy-task-definition@de0132cf8cdedb79975c6d42b77eb7ea193cf28e
