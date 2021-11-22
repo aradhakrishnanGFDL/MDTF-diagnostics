@@ -41,7 +41,7 @@ jobs:
         id: build-image
         uses: aradhakrishnanGFDL/docker-build-with-cache-action@support-aws-ecr-public
         with:
-         registry: public.ecr.aws
+         registry: public.ecr.aws/c6h4h4s8
          #priv test registry: 430073024411.dkr.ecr.us-east-1.amazonaws.com
          image_name: mdtf/mdtf-test
          push_image_and_stages: false
