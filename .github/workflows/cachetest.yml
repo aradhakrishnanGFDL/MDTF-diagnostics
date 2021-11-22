@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Deploy to Amazon ECS,cache-test
+name: cache-test,private
 
 on:
   push:
@@ -41,7 +41,8 @@ jobs:
         id: build-image
         uses: aradhakrishnanGFDL/docker-build-with-cache-action@support-aws-ecr-public
         with:
-         registry: public.ecr.aws
+         #registry: public.ecr.aws
+         registry: 430073024411.dkr.ecr.us-east-1.amazonaws.com
          image_name: c6h4h4s8/mdtf/mdtf-test
          push_image_and_stages: false
          image_tag: latest
