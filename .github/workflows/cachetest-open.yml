@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: cache-test,private
+name: cache-test,open
 
 on:
   push:
@@ -41,10 +41,10 @@ jobs:
         id: build-image
         uses: aradhakrishnanGFDL/docker-build-with-cache-action@support-aws-ecr-public
         with:
-         #registry: public.ecr.aws
-         registry: 430073024411.dkr.ecr.us-east-1.amazonaws.com
-         image_name: c6h4h4s8/mdtf/mdtf-test
-         push_image_and_stages: true
+         registry: public.ecr.aws
+         #priv test registry: 430073024411.dkr.ecr.us-east-1.amazonaws.com
+         image_name: mdtf/mdtf-test
+         push_image_and_stages: false
          image_tag: latest
 
 
