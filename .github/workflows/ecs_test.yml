@@ -45,12 +45,12 @@ jobs:
          IMAGE_TAG: "latest"
          ECS_IMAGE: $ECR_REGISTRY/ECR_REPOSITORY:$env.IMAGE_TAG
         with:
-         registry: $ECR_REGISTRY
+         registry: public.ecr.aws
          username: "${{ secrets.AWS_ACCESS_KEY_ID }}"  
          password: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"  
          image_name: c6h4h4s8/mdtf/mdtf-test
          push_image_and_stages: true
-         image_tag: $IMAGE_TAG
+         image_tag: latest
 
       - name: Fill in the new image ID in the Amazon ECS task definition
         id: task-def
