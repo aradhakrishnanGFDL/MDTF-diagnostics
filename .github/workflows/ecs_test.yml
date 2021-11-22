@@ -41,7 +41,7 @@ jobs:
         id: build-image
         uses: aradhakrishnanGFDL/docker-build-with-cache-action@cache-public-ecr-fix #support-aws-ecr-public
         env:
-         ECR_REGISTRY: "public.ecr.aws"
+         ECR_REGISTRY: public.ecr.aws
          IMAGE_TAG: "latest"
          ECS_IMAGE: $ECR_REGISTRY/ECR_REPOSITORY:$env.IMAGE_TAG
         with:
