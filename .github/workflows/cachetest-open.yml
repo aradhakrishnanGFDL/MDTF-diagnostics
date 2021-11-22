@@ -22,9 +22,9 @@ env:
 
 jobs:
   deploy:
-    name: Deploy
+    name: push-to-public-ecr-cache-test
     runs-on: ubuntu-latest
-    environment: production
+    environment: dev
 
     steps:
       - name: Checkout
@@ -39,7 +39,7 @@ jobs:
 
       - name: Build, tag, and push image to Amazon ECR
         id: build-image
-        uses: aradhakrishnanGFDL/docker-build-with-cache-action@master #support-aws-ecr-public
+        uses: aradhakrishnanGFDL/docker-build-with-cache-action@cache-public-ecr-fix #support-aws-ecr-public
         with:
          registry: public.ecr.aws
          username: "${{ secrets.AWS_ACCESS_KEY_ID }}"  
