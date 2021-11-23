@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: CI/CD beta tests (cloud: ECS, Fargate),open
+name: CI/CD ECS tests
 
 on:
   push:
