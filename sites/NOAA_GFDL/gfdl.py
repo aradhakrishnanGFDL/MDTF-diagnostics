@@ -44,7 +44,7 @@ class GFDLMDTFFramework(core.MDTFFramework):
         self.global_env_vars['MDTF_TMPDIR'] = gfdl_tmp_dir
 
     def _post_parse_hook(self, cli_obj, config, paths):
-        ### call parent class method
+        # call parent class method
         super(GFDLMDTFFramework, self)._post_parse_hook(cli_obj, config, paths)
 
         self.reset_case_pod_list(cli_obj, config, paths)
@@ -75,11 +75,17 @@ class GFDLMDTFFramework(core.MDTFFramework):
         if os.path.exists(p.WORKING_DIR) and not \
             (keep_temp or p.WORKING_DIR == p.OUTPUT_DIR):
             gfdl_util.rmtree_wrapper(p.WORKING_DIR)
-        util.check_dir(p, 'CODE_ROOT', create=False)
-        util.check_dir(p, 'OBS_DATA_REMOTE', create=False)
-        util.check_dir(p, 'MODEL_DATA_ROOT', create=True)
-        util.check_dir(p, 'OBS_DATA_ROOT', create=True)
-        util.check_dir(p, 'WORKING_DIR', create=True)
+
+        try:
+            for dir_name, create_ in (
+                ('CODE_ROOT', False), ('OBS_DATA_REMOTE', False),
+                ('OBS_DATA_ROOT', True), ('MODEL_DATA_ROOT', True), ('WORKING_DIR', True)
+            ):
+                util.check_dir(p, dir_name, create=create_)
+        except Exception as exc:
+            _log.fatal((f"Input settings for {dir_name} mis-specified (caught "
+                f"{repr(exc)}.)"))
+            util.exit_handler(code=1)
 
         # Use GCP to create OUTPUT_DIR on a volume that may be read-only
         if not os.path.exists(p.OUTPUT_DIR):
@@ -247,8 +253,6 @@ class Gfdludacmip6DataManager(
     _FileRegexClass = cmip6.CMIP6_DRSPath
     _DirectoryRegex = cmip6.drs_directory_regex
     _AttributesClass = GFDL_UDA_CMIP6DataSourceAttributes
-    _convention = "CMIP" # hard-code naming convention
-    col_spec = data_sources.cmip6LocalFileDataSource_col_spec
     _fetch_method = "cp" # copy locally instead of symlink due to NFS hanging
 
 
@@ -268,8 +272,6 @@ class Gfdlarchivecmip6DataManager(
     _FileRegexClass = cmip6.CMIP6_DRSPath
     _DirectoryRegex = cmip6.drs_directory_regex
     _AttributesClass = GFDL_archive_CMIP6DataSourceAttributes
-    _convention = "CMIP" # hard-code naming convention
-    col_spec = data_sources.cmip6LocalFileDataSource_col_spec
     _fetch_method = "gcp"
 
 
@@ -288,8 +290,6 @@ class Gfdldatacmip6DataManager(
     _FileRegexClass = cmip6.CMIP6_DRSPath
     _DirectoryRegex = cmip6.drs_directory_regex
     _AttributesClass = GFDL_data_CMIP6DataSourceAttributes
-    _convention = "CMIP" # hard-code naming convention
-    col_spec = data_sources.cmip6LocalFileDataSource_col_spec
     _fetch_method = "gcp"
 
 # RegexPattern that matches any string (path) that doesn't end with ".nc".
@@ -400,7 +400,26 @@ class PPDataSourceAttributes(data_manager.DataSourceAttributesBase):
     # date_range: util.DateRange
     # CASE_ROOT_DIR: str
     # convention: str
-    pass
+
+    convention: str = "GFDL"
+    CASE_ROOT_DIR: str = ""
+    component: str = ""
+    # chunk_freq: util.DateFrequency = None # THIS IS THE PROBLEM LINE FOPR THE GFDL SITE BUILD!!!
+
+    #  This method overrides dataclass.mdtf_dataclass._old_post_init.
+    # _old_post_init has the parms *args, and **kwargs. Excluding these parms
+    # from the super().__post_init__() call, therefore, caused an error that 1
+    # positional argument (self) was specified, but 2 were given during the self.atts definition
+    # in data_manager.DataSourceBase.__init__()
+    # I resolved the problem (I think) using the example here:
+    # https://stackoverflow.com/questions/66995998/how-can-i-take-the-variable-from-the-parent-class-constructor-and-use-it-in-the
+    # after another post stated that an error like this could be caused by class override issues.
+    def __post_init__(self, *args, **kwargs):
+        """Validate user input.
+        """
+        super(PPDataSourceAttributes, self).__post_init__(*args, **kwargs)
+        config = core.ConfigManager()
+
 
 gfdlppDataManager_any_components_col_spec = data_manager.DataframeQueryColumnSpec(
     # Catalog columns whose values must be the same for all variables.
@@ -419,6 +438,7 @@ gfdlppDataManager_same_components_col_spec = data_manager.DataframeQueryColumnSp
 )
 
 class GfdlppDataManager(GFDL_GCP_FileDataSourceBase):
+    # extends GFDL_GCP_FileDataSourceBase
     _FileRegexClass = PPTimeseriesDataFile
     _DirectoryRegex = pp_dir_regex
     _AttributesClass = PPDataSourceAttributes
@@ -430,32 +450,54 @@ class GfdlppDataManager(GFDL_GCP_FileDataSourceBase):
         else:
             return gfdlppDataManager_same_components_col_spec
 
-    # map "name" field in VarlistEntry's query_attrs() to "variable" field here
+    # map "name" field in VarlistEntry's query_attrs() to "variable" field of
+    # PPTimeseriesDataFile
     _query_attrs_synonyms = {'name': 'variable'}
 
     def __init__(self, case_dict, parent):
         super(GfdlppDataManager, self).__init__(case_dict, parent)
+        # default behavior when run interactively:
+        # frepp_mode = False, any_components = True
+        # default behavior when invoked by FRE wrapper:
+        # frepp_mode = True (set to False by calling wrapper with --run_once)
+        # any_components = True (set to False with --component_only)
         config = core.ConfigManager()
+        self.frepp_mode = config.get('frepp', False)
         self.any_components = config.get('any_components', False)
 
     @property
     def pod_expt_key_cols(self):
-        return (tuple() if self.any_components else ('component', ))
-
-    @property
-    def pod_expt_cols(self):
-        # Catalog columns whose values must be the same for each POD.
-        return self.pod_expt_key_cols
+        """Catalog columns whose values must be the same for each POD, but can
+        differ for different PODs.
+        """
+        if self.frepp_mode and not self.any_components:
+            return 'component'
+        else:
+            return tuple()
 
     @property
     def var_expt_key_cols(self):
-        return (('chunk_freq', 'component') if self.any_components else ('chunk_freq', ))
+        """Catalog columns whose values must "be the same for each variable", ie
+        are irrelevant but must be constrained to a unique value.
+        """
+        # if we aren't restricted to one component, use all components regardless
+        # of frepp_mode. This is the default behavior when called from the FRE
+        # wrapper.
+        if self.any_components:
+            return 'chunk_freq', 'component'
+        else:
+            return 'chunk_freq'
+
+    # these have to be supersets of their *_key_cols counterparts; for this use
+    # case they're all just the same set of attributes.
+    @property
+    def expt_cols(self): return self.expt_key_cols
 
     @property
-    def var_expt_cols(self):
-        # Catalog columns whose values must "be the same for each variable", ie
-        # are irrelevant but must be constrained to a unique value.
-        return self.var_expt_key_cols
+    def pod_expt_cols(self): return self.pod_expt_key_cols
+
+    @property
+    def var_expt_cols(self): return self.var_expt_key_cols
 
     @property
     def CATALOG_DIR(self):
@@ -538,7 +580,11 @@ class GfdlautoDataManager(object):
     ends in "pp", use :class:`GfdlppDataManager`, otherwise use CMIP6 data on
     /uda via :class:`Gfdludacmip6DataManager`.
     """
-    def __new__(cls, case_dict, *args, **kwargs):
+    # Note, object is explicitly defined as a parameter for Python 2/3
+    # compatibility reasons; omitting object in Python2 yields "old-style" classes
+    # All classes are "new-style" in Python3 by default.
+    # TODO: Since WE DO NOT SUPPORT PYTHON2, remove object parm and verify that it doesn't destroy everything
+    def __new__(cls, case_dict, parent, *args, **kwargs):
         """Dispatch DataManager instance creation based on the contents of
         case_dict."""
         config = core.ConfigManager()
@@ -553,7 +599,7 @@ class GfdlautoDataManager(object):
         _log.debug("%s: Dispatched DataManager to %s.",
             cls.__name__, dispatched_cls.__name__)
         obj = dispatched_cls.__new__(dispatched_cls)
-        obj.__init__(case_dict)
+        obj.__init__(case_dict, parent)
         return obj
 
     def __init__(self, *args, **kwargs):
@@ -619,10 +665,10 @@ class GfdlvirtualenvEnvironmentManager(
         modMgr.revert_state()
 
 class GfdlcondaEnvironmentManager(environment_manager.CondaEnvironmentManager):
-    # Use mdteam's anaconda2
+    # Use miniconda3 in the mdtf role account
     def _call_conda_create(self, env_name):
         raise Exception(("Trying to create conda env {} "
-            "in read-only mdteam account.").format(env_name)
+            "in read-only mdtf role account.").format(env_name)
         )
 
 # ------------------------------------------------------------------------

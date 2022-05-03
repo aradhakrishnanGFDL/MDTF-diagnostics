@@ -1,5 +1,6 @@
-"""Implementation classes for the model data query/fetch functionality
-implemented in src/data_manager.py, selected by the user via  ``--data_manager``.
+"""Implementation classes for model data query/fetch functionality, selected by
+the user via ``--data_manager``; see :doc:`ref_data_sources` and
+:doc:`fmwk_datasources`.
 """
 import os
 import collections
@@ -24,6 +25,8 @@ sample_data_regex = util.RegexPattern(
     input_field="remote_path",
     match_error_filter=ignore_non_nc_regex
 )
+
+
 @util.regex_dataclass(sample_data_regex)
 class SampleDataFile():
     """Dataclass describing catalog entries for sample model data files.
@@ -32,6 +35,7 @@ class SampleDataFile():
     frequency: util.DateFrequency = util.MANDATORY
     variable: str = util.MANDATORY
     remote_path: str = util.MANDATORY
+
 
 @util.mdtf_dataclass
 class SampleDataAttributes(dm.DataSourceAttributesBase):
@@ -43,8 +47,8 @@ class SampleDataAttributes(dm.DataSourceAttributesBase):
     # LASTYR: str
     # date_range: util.DateRange
     # CASE_ROOT_DIR: str
-    # convention: str
     # log: dataclasses.InitVar = _log
+    convention: str = "CMIP"  # default value, can be overridden
     sample_dataset: str = ""
 
     def _set_case_root_dir(self, log=_log):
@@ -85,10 +89,12 @@ class SampleDataAttributes(dm.DataSourceAttributesBase):
                 self.sample_dataset, self.CASE_ROOT_DIR)
             util.exit_handler(code=1)
 
+
 sampleLocalFileDataSource_col_spec = dm.DataframeQueryColumnSpec(
     # Catalog columns whose values must be the same for all variables.
     expt_cols = dm.DataFrameQueryColumnGroup(["sample_dataset"])
 )
+
 
 class SampleLocalFileDataSource(dm.SingleLocalFileDataSource):
     """DataSource for handling POD sample model data stored on a local filesystem.
@@ -201,6 +207,7 @@ class MetadataRewriteParser(xr_parser.DefaultDatasetParser):
                 # translated var itself in addition to setting directly on ds
                 setattr(var.translation, k, v)
 
+
 class MetadataRewritePreprocessor(preprocessor.DaskMultiFilePreprocessor):
     """Subclass :class:`~preprocessor.DaskMultiFilePreprocessor` in order to
     look up and apply edits to metadata that are stored in
@@ -229,17 +236,21 @@ class MetadataRewritePreprocessor(preprocessor.DaskMultiFilePreprocessor):
                 preprocessor.RenameVariablesFunction
             )
 
+
 dummy_regex = util.RegexPattern(
     r"""(?P<dummy_group>.*) # match everything; RegexPattern needs >= 1 named groups
     """,
     input_field="remote_path",
     match_error_filter=ignore_non_nc_regex
 )
+
+
 @util.regex_dataclass(dummy_regex)
 class GlobbedDataFile():
     """Applies a trivial regex to the paths returned by the glob."""
     dummy_group: str = util.MANDATORY
     remote_path: str = util.MANDATORY
+
 
 @util.mdtf_dataclass
 class ExplicitFileDataSourceConfigEntry():
@@ -290,6 +301,7 @@ class ExplicitFileDataSourceConfigEntry():
             }
         )
 
+
 @util.mdtf_dataclass
 class ExplicitFileDataAttributes(dm.DataSourceAttributesBase):
     # CASENAME: str          # fields inherited from dm.DataSourceAttributesBase
@@ -319,10 +331,12 @@ class ExplicitFileDataAttributes(dm.DataSourceAttributesBase):
                 self.convention, core._NO_TRANSLATION_CONVENTION)
             self.convention = core._NO_TRANSLATION_CONVENTION
 
+
 explicitFileDataSource_col_spec = dm.DataframeQueryColumnSpec(
     # Catalog columns whose values must be the same for all variables.
     expt_cols = dm.DataFrameQueryColumnGroup([])
 )
+
 
 class ExplicitFileDataSource(
     dm.OnTheFlyGlobQueryMixin, dm.LocalFetchMixin, dm.DataframeQueryDataSourceBase
@@ -403,6 +417,7 @@ class ExplicitFileDataSource(
             yield entry.to_file_glob_tuple()
 
 # ----------------------------------------------------------------------------
+
 
 @util.mdtf_dataclass
 class CMIP6DataSourceAttributes(dm.DataSourceAttributesBase):
@@ -497,6 +512,7 @@ class CMIP6DataSourceAttributes(dm.DataSourceAttributesBase):
         else:
             self.CATALOG_DIR = new_root
 
+
 cmip6LocalFileDataSource_col_spec = dm.DataframeQueryColumnSpec(
     # Catalog columns whose values must be the same for all variables.
     expt_cols = dm.DataFrameQueryColumnGroup(
@@ -518,6 +534,7 @@ cmip6LocalFileDataSource_col_spec = dm.DataframeQueryColumnSpec(
     daterange_col = "date_range"
 )
 
+
 class CMIP6ExperimentSelectionMixin():
     """Encapsulate attributes and logic used for CMIP6 experiment disambiguation
     so that it can be reused in DataSources with different parents (eg. different
@@ -525,6 +542,9 @@ class CMIP6ExperimentSelectionMixin():
 
     Assumes inheritance from DataframeQueryDataSourceBase -- should enforce this.
     """
+    # Mandate the CMIP naming convention for all data sources inheriting from this
+    _convention = "CMIP"
+
     # map "name" field in VarlistEntry's query_attrs() to "variable_id" field here
     _query_attrs_synonyms = {'name': 'variable_id'}
 
@@ -619,6 +639,7 @@ class CMIP6ExperimentSelectionMixin():
             col_name, df[col_name].iloc[0], obj.name)
         return df
 
+
 class CMIP6LocalFileDataSource(CMIP6ExperimentSelectionMixin, dm.LocalFileDataSource):
     """DataSource for handling model data named following the CMIP6 DRS and
     stored on a local filesystem.
@@ -629,5 +650,3 @@ class CMIP6LocalFileDataSource(CMIP6ExperimentSelectionMixin, dm.LocalFileDataSo
     _DiagnosticClass = diagnostic.Diagnostic
     _PreprocessorClass = preprocessor.DefaultPreprocessor
     col_spec = cmip6LocalFileDataSource_col_spec
-    _convention = "CMIP" # hard-code naming convention
-
