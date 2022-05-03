@@ -144,26 +144,37 @@ wipetmp
 
 ## run the command
 echo "mdtf_gfdl.csh: conda activate"
-source "${REPO_DIR}/src/conda/conda_init.sh" -q "/home/oar.gfdl.mdtf/miniconda3"
+#throws errors source "${REPO_DIR}/src/conda/conda_init.sh" -q "/home/oar.gfdl.mdtf/miniconda3"
+source /home/oar.gfdl.mdtf/miniconda3/etc/profile.d/conda.csh
+conda activate _MDTF_base
+
 conda activate "${CONDA_ROOT}/envs/_MDTF_base"
 
 echo "mdtf_gfdl.csh: MDTF start"
 
-"${REPO_DIR}/mdtf_framework.py" \
---site="NOAA_GFDL" \
-$frepp_flag:q \
---MODEL_DATA_ROOT "${INPUT_DIR}/model" \
---OBS_DATA_ROOT "${INPUT_DIR}/obs_data" \
---WORKING_DIR "$WK_DIR" \
---OUTPUT_DIR "$out_dir" \
---data_manager "GFDL_PP" \
---environment_manager "GFDL_conda" \
---CASENAME "$descriptor" \
---CASE_ROOT_DIR "$PP_DIR" \
---FIRSTYR $yr1 \
---LASTYR $yr2 \
-$passed_args:q
+###### workaround to create input json based on a template json and the frepp template variables ####
+set template_jsonc = "/home/a1r/mdtf_template/mdtf_frepp_settings.jsonc" #TODO merge to repo or within mdtf role account after testing
 
+gcp -cd $template_jsonc $WK_DIR/
+gcp -cd $template_jsonc ${out_dir}/
+echo "A copy of the input json can be found in outputdir as well ${out_dir}/" #TODO move under corresponding exp directory
+
+
+set input_jsonc = ${WK_DIR}/mdtf_frepp_settings.jsonc
+
+sed -i 's/CASENAME1/'${descriptor}'/g' $input_jsonc
+sed -i 's|PPDIR1|'{$PP_DIR}'|' $input_jsonc
+sed -i 's/FIRSTYR1/'${yr1}'/g' $input_jsonc
+sed -i 's/LASTYR1/'${yr2}'/g' $input_jsonc
+sed -i 's|OUTPUTDIR1|'${out_dir}'|' $input_jsonc
+
+echo "Filled in input settings json and using this for the MDTF run $input_jsonc"
+
+echo "Running ${REPO_DIR}/mdtf_framework.py -f ${input_jsonc} --site NOAA_GFDL -v "
+${REPO_DIR}/mdtf_framework.py -f ${input_jsonc} --site NOAA_GFDL -v
+
+
+##workaround ends 
 pkg_status=$?
 echo "mdtf_gfdl.csh: MDTF finish; exit={$pkg_status}"
 
