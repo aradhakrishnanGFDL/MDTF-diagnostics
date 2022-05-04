@@ -156,7 +156,6 @@ echo "mdtf_gfdl.csh: MDTF start"
 set template_jsonc = "/home/a1r/mdtf_template/mdtf_frepp_settings.jsonc" #TODO merge to repo or within mdtf role account after testing
 
 gcp -cd $template_jsonc $WK_DIR/
-gcp -cd $template_jsonc ${out_dir}/
 echo "A copy of the input json can be found in outputdir as well ${out_dir}/" #TODO move under corresponding exp directory
 
 
@@ -169,6 +168,9 @@ sed -i 's/LASTYR1/'${yr2}'/g' $input_jsonc
 sed -i 's|OUTPUTDIR1|'${out_dir}'|' $input_jsonc
 
 echo "Filled in input settings json and using this for the MDTF run $input_jsonc"
+
+gcp -cd $input_jsonc $WK_DIR/
+gcp -cd $input_jsonc ${out_dir}/
 
 echo "Running ${REPO_DIR}/mdtf_framework.py -f ${input_jsonc} --site NOAA_GFDL -v "
 ${REPO_DIR}/mdtf_framework.py -f ${input_jsonc} --site NOAA_GFDL -v
