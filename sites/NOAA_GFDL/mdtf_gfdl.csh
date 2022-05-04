@@ -169,7 +169,6 @@ sed -i 's|OUTPUTDIR1|'${out_dir}'|' $input_jsonc
 
 echo "Filled in input settings json and using this for the MDTF run $input_jsonc"
 
-gcp -cd $input_jsonc $WK_DIR/
 gcp -cd $input_jsonc ${out_dir}/
 
 echo "Running ${REPO_DIR}/mdtf_framework.py -f ${input_jsonc} --site NOAA_GFDL -v "
