@@ -19,10 +19,10 @@
       "axis": "Z"
     },
     "standard_hybrid_sigma": {
-    "standard_name": "atmosphere_hybrid_sigma_pressure_coordinate",
-    "units": "1",
-    "axis": "Z",
-    "positive": "down"
+      "standard_name": "atmosphere_hybrid_sigma_pressure_coordinate",
+      "units": "1",
+      "axis": "Z",
+      "positive": "down"
     },
     "lev": {
       "standard_name": "depth",
