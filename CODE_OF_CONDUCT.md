@@ -6,11 +6,11 @@ Model Diagnostics Task Force framework team is dedicated to providing a respectf
 
 Our code of conduct policy for the project community members emphasizes on the following key ground rules:
 
-**1.  Respect everyone's opinion and privacy;
-**2.  Every opinion has value;
-**3.  Listen attentively to everyone's point of view;
+1.  Respect everyone's opinion and privacy.
+2.  Every opinion has value.
+3.  Listen attentively to everyone's point of view.
 
-Furthermore, the community needs to adhere to the following:
+Furthermore, our community members are expected to adhere to the following:
 
 * **1. Be friendly, patient, and welcoming**.    
    We strive to be a community that welcomes and supports
