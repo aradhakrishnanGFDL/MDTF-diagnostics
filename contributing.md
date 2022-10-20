@@ -48,6 +48,14 @@ Our code reviewers are presently part of the MDTF framework leads team. Their co
 
 We encourage you to pitch in. Many thanks to our wonderful [contributors](link tba)
 
+#### ** How can I add myself to the contributors page?**
+
+Thank you for pitching in! Please check [this](https://allcontributors.org/docs/en/bot/usage) out to see how you can add your name to the contributor list. It's just one important step away!  
+
+Create an issue or a PR and just add this "@all-contributors add @your_github_handle for doc" 
+
+Please note that it can be a doc, design, idea, review, tool, talk, code or any contribution, any size! 
+Refer to  [categories](https://allcontributors.org/docs/en/emoji-key) to see available categories. If you don't see a relevant one, open an issue please. 
 Thanks!
 
 
