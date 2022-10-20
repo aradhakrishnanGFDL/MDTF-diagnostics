@@ -1,6 +1,8 @@
 # MDTF-diagnostics: A Portable Framework for Weather and Climate Model Data Analysis
 
-[![Documentation Status](https://readthedocs.org/projects/mdtf-diagnostics/badge/?version=latest)](https://mdtf-diagnostics.readthedocs.io/en/latest/?badge=latest) [![Build Status](https://travis-ci.com/NOAA-GFDL/MDTF-diagnostics.svg?branch=main)](https://travis-ci.com/NOAA-GFDL/MDTF-diagnostics) [![Total alerts](https://img.shields.io/lgtm/alerts/g/NOAA-GFDL/MDTF-diagnostics.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/NOAA-GFDL/MDTF-diagnostics/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/NOAA-GFDL/MDTF-diagnostics.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/NOAA-GFDL/MDTF-diagnostics/context:python)
+[![Documentation Status](https://readthedocs.org/projects/mdtf-diagnostics/badge/?version=latest)](https://mdtf-diagnostics.readthedocs.io/en/latest/?badge=latest) [![Build Status](https://travis-ci.com/NOAA-GFDL/MDTF-diagnostics.svg?branch=main)](https://travis-ci.com/NOAA-GFDL/MDTF-diagnostics) [![Total alerts](https://img.shields.io/lgtm/alerts/g/NOAA-GFDL/MDTF-diagnostics.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/NOAA-GFDL/MDTF-diagnostics/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/NOAA-GFDL/MDTF-diagnostics.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/NOAA-GFDL/MDTF-diagnostics/context:python)<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
 
 The MDTF-diagnostics package is a portable framework for running process-oriented diagnostics (PODs) on weather and climate model data.
 
@@ -204,3 +206,14 @@ This repository is a scientific product and is not an official communication of 
 
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
