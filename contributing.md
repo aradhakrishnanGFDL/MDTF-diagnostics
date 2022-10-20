@@ -9,7 +9,7 @@
 
 * If relevant, use the bug report template that appears by default when you open a new issue.
 
-#### **Did you write a patch that fixes a bug? **
+#### Did you write a patch that fixes a bug? 
 
 * Open a new GitHub pull request with the patch.
 
@@ -18,7 +18,7 @@
 * Before submitting, please read the [best practices](https://mdtf-diagnostics.readthedocs.io/en/latest/sphinx/dev_coding_tips.html?highlight=coding) guide to know more about coding conventions. Please note that this is a work in progress to set up best practices.
 * Open a new issue to provide suggested changes to the best practices.
 
-#### **Did you fix whitespace, format code, or make a purely cosmetic patch?**
+#### Did you fix whitespace, format code, or make a purely cosmetic patch
 
 Changes that are cosmetic in nature and do not add anything substantial to the stability, functionality, or testability of MDTF will still need an issue and go through a review process.
 
