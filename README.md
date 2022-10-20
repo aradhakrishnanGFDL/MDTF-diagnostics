@@ -4,23 +4,6 @@
 
 The MDTF-diagnostics package is a portable framework for running process-oriented diagnostics (PODs) on weather and climate model data.
 
-## Contributors
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/aradhakrishnanGFDL"><img src="https://avatars.githubusercontent.com/u/26334954?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aparna Radhakrishnan</b></sub></a><br /><a href="https://github.com/aradhakrishnanGFDL/toy-mdtf/pulls?q=is%3Apr+reviewed-by%3AaradhakrishnanGFDL" title="Reviewed Pull Requests">👀</a></td>
-    <td align="center"><a href="https://github.com/wrongkindofdoctor"><img src="https://avatars.githubusercontent.com/u/20195932?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jess</b></sub></a><br /><a href="https://github.com/aradhakrishnanGFDL/toy-mdtf/commits?author=wrongkindofdoctor" title="Code">💻</a></td>
-  </tr>
-</table>
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
 ## What is a POD?
 ![MDTF_logo](<./doc/img/CPO_MAPP_MDTF_Logo.jpg>)
 Each process-oriented diagnostic [POD; [Maloney et al.(2019)](#citations)] targets a specific physical process or emergent behavior to determine how well one or more models represent the process, ensure that models produce the right answers for the right reasons, and identify gaps in the understanding of phenomena. Each POD is independent of other PODs. PODs generate diagnostic figures that can be viewed as an html file using a web browser.
