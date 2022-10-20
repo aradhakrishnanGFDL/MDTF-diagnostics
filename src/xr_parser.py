@@ -13,6 +13,7 @@ import warnings
 import cftime # believe explict import needed for cf_xarray date parsing?
 import cf_xarray
 import xarray as xr
+import numpy as np
 
 from src import util, units, core
 
@@ -557,13 +558,20 @@ class DefaultDatasetParser():
         """
         def _restore_one(name, attrs_d):
             backup_d = self.attrs_backup.get(name, dict())
-            for k,v in backup_d.items():
+            for k, v in backup_d.items():
                 if v is ATTR_NOT_FOUND:
                     continue
-                if k in attrs_d and v != attrs_d[k]:
-                    # log warning but still update attrs
-                    self.log.warning("%s: discrepancy for attr '%s': '%s' != '%s'.",
-                        name, k, v, attrs_d[k])
+                if k in attrs_d:
+                    if isinstance(v, np.ndarray):
+                        for vv in v:
+                            if vv not in attrs_d[k]:
+                                # log warning but still update attrs
+                                self.log.warning("%s: discrepancy for attr '%s': '%s' != '%s'.",
+                                                 name, k, vv, attrs_d[k])
+                    elif hasattr(v, '__iter__') and not isinstance(v, str) and v.any() not in attrs_d[k]\
+                            or v != attrs_d[k]:
+                        self.log.warning("%s: discrepancy for attr '%s': '%s' != '%s'.",
+                                         name, k, v, attrs_d[k])
                 attrs_d[k] = v
 
         _restore_one('Dataset', ds.attrs)
@@ -1252,3 +1260,26 @@ class DefaultDatasetParser():
             if (ref not in all_arr_names) and (ref not in all_attr_names):
                 missing_refs[ref] = lookup[ref]
         return missing_refs
+
+
+class MultirunDefaultDatasetParser(DefaultDatasetParser):
+    """Class containing MDTF-specific methods for cleaning and normalizing
+    xarray metadata. Methods reference data_mgr only. The data_mgr references the pod
+    object that contains the cases, rather than a case object with all of the pods.
+
+    Top-level methods are :meth:`parse` and :meth:`get_unmapped_names`.
+    """
+    def __init__(self, data_mgr):
+        """Constructor.
+
+        Args:
+            data_mgr: DataSource instance calling the preprocessor: src.diagnostic.MultirunDiagnostic
+        """
+        config = core.ConfigManager()
+        self.disable = config.get('disable_preprocessor', False)
+        self.overwrite_ds = config.get('overwrite_file_metadata', False)
+        self.guess_names = False
+
+        self.fallback_cal = 'proleptic_gregorian'  # CF calendar used if no attribute found
+        self.attrs_backup = dict()
+        self.log = data_mgr.log  # temporary

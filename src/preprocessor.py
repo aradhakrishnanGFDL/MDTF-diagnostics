@@ -14,6 +14,7 @@ import xarray as xr
 import logging
 _log = logging.getLogger(__name__)
 
+
 def copy_as_alternate(old_v, data_mgr, **kwargs):
     """Wrapper for :py:func:`dataclasses.replace` that creates a copy of an
     existing variable (:class:`~src.diagnostic.VarlistEntry`) *old_v* and sets appropriate
@@ -33,6 +34,7 @@ def copy_as_alternate(old_v, data_mgr, **kwargs):
         **kwargs
     )
     return new_v
+
 
 def edit_request_wrapper(wrapped_edit_request_func):
     """Decorator implementing the most typical use case for
@@ -70,18 +72,70 @@ def edit_request_wrapper(wrapped_edit_request_func):
                 # in varlist query order
                 new_v.alternates = v.alternates
                 v.alternates = [[new_v]]
-                new_v_t_name = (str(new_v.translation) \
-                    if getattr(new_v, 'translation', None) is not None \
-                    else "(not translated)")
-                v_t_name = (str(v.translation) if getattr(v, 'translation', None) \
-                    is not None else "(not translated)")
+                new_v_t_name = (str(new_v.translation)
+                                if getattr(new_v, 'translation', None) is not None
+                                else "(not translated)")
+                v_t_name = (str(v.translation) if getattr(v, 'translation', None)
+                                                  is not None else "(not translated)")
                 pod.log.debug("%s for %s: add translated %s as alternate for %s.",
-                    self.__class__.__name__, v.full_name, new_v_t_name, v_t_name)
+                              self.__class__.__name__, v.full_name, new_v_t_name, v_t_name)
                 new_varlist.append(v)
                 new_varlist.append(new_v)
         pod.varlist = diagnostic.Varlist(contents=new_varlist)
 
     return wrapped_edit_request
+
+
+def multirun_edit_request_wrapper(multirun_wrapped_edit_request_func):
+    """Decorator implementing the most typical use case for
+    :meth:`~PreprocessorFunctionBase.edit_request` in multirun preprocessor functions, in
+    which we loop through each case, look at each variable request  in the varlist separately and,
+    optionally, insert a new alternate :class:`~src.diagnostic.VarlistEntry`
+    after it, based on that variable.
+
+    This decorator wraps a function (*multirun_wrapped_edit_request_func*) which either
+    constructs and returns the desired new alternate
+    :class:`~src.diagnostic.VarlistEntry`, or returns None if no alternates are
+    to be added for the given variable request. It adds logic for updating the
+    list of alternates for each cases varlist.
+
+    .. note::
+
+       This decorator alters the signature of the decorated function, which is
+       not in keeping with Python best practices. The expected signature of
+       *wrapped_edit_request_func* is (:class:`~src.diagnostic.VarlistEntry` *v*,
+       :class:`~src.diagnostic.MultirunDiagnostic` *data_mgr*), while the
+       signature of the returned function is that of
+       :meth:`PreprocessorFunctionBase.edit_request`.
+    """
+    @functools.wraps(multirun_wrapped_edit_request_func)
+    def wrapped_edit_request(self, data_mgr):
+        for case_name, case_d in data_mgr.cases.items():
+            new_varlist = []
+            for v in case_d.varlist.iter_contents():
+                new_v = multirun_wrapped_edit_request_func(self, v, data_mgr)
+                if new_v is None:
+                    # no change, pass through VE unaltered
+                    new_varlist.append(v)
+                    continue
+                else:
+                    # insert new_v between v itself and v's old alternate sets
+                    # in varlist query order
+                    new_v.alternates = v.alternates
+                    v.alternates = [[new_v]]
+                    new_v_t_name = (str(new_v.translation)
+                                    if getattr(new_v, 'translation', None) is not None
+                                    else "(not translated)")
+                    v_t_name = (str(v.translation) if getattr(v, 'translation', None)
+                                                      is not None else "(not translated)")
+                    case_d.log.debug("%s for %s: add translated %s as alternate for %s.",
+                                  self.__class__.__name__, v.full_name, new_v_t_name, v_t_name)
+                    new_varlist.append(v)
+                    new_varlist.append(new_v)
+            case_d.varlist = diagnostic.MultirunVarlist(contents=new_varlist)
+
+    return wrapped_edit_request
+
 
 class PreprocessorFunctionBase(abc.ABC):
     """Abstract interface for implementing a specific preprocessing functionality.
@@ -99,11 +153,11 @@ class PreprocessorFunctionBase(abc.ABC):
       function is capable of converting into the format requested by the POD.
     - :meth:`process`, which actually implements the data format conversion.
     """
-    def __init__(self, data_mgr, pod):
+    def __init__(self, data_mgr, *args):
         """Called during Preprocessor's init."""
         pass
 
-    def edit_request(self, data_mgr, pod):
+    def edit_request(self, data_mgr, *args):
         """Edit the data requested in *pod*'s :class:`~src.diagnostic.Varlist`
         queue, based on the transformations the functionality can perform (in
         :meth:`process`). If the function can transform data in format *X* to
@@ -114,13 +168,11 @@ class PreprocessorFunctionBase(abc.ABC):
         Args:
             data_mgr: Parent data source instance, used read-only to obtain
                 initialization information not available from individual PODs.
-            pod (:class:`~src.diagnostic.Diagnostic`): POD object containing the
-                :class:`~src.diagnostic.Varlist` to be modified (in place).
         """
         pass
 
     @abc.abstractmethod
-    def process(self, var, dataset):
+    def process(self, var, dataset, *args):
         """Apply the format conversion implemented in this PreprocessorFunction
         to the input dataset *dataset*, according to the request made in *var*.
 
@@ -136,6 +188,7 @@ class PreprocessorFunctionBase(abc.ABC):
             Modified *dataset*.
         """
         return dataset
+
 
 class CropDateRangeFunction(PreprocessorFunctionBase):
     """A PreprocessorFunction which truncates the date range (time axis) of
@@ -161,7 +214,7 @@ class CropDateRangeFunction(PreprocessorFunctionBase):
         """
         pass
 
-    def process(self, var, ds):
+    def process(self, var, ds, *args):
         """Parse quantities related to the calendar for time-dependent data and
         truncate the date range of model dataset *ds*.
 
@@ -212,14 +265,15 @@ class CropDateRangeFunction(PreprocessorFunctionBase):
             )
         else:
             var.log.info("Cropped date range of %s from '%s -- %s' to '%s -- %s'.",
-                var.full_name,
-                t_start.strftime('%Y-%m-%d'),
-                t_end.strftime('%Y-%m-%d'),
-                new_t.values[0].strftime('%Y-%m-%d'),
-                new_t.values[-1].strftime('%Y-%m-%d'),
-                tags=util.ObjectLogTag.NC_HISTORY
-            )
+                         var.full_name,
+                         t_start.strftime('%Y-%m-%d'),
+                         t_end.strftime('%Y-%m-%d'),
+                         new_t.values[0].strftime('%Y-%m-%d'),
+                         new_t.values[-1].strftime('%Y-%m-%d'),
+                         tags=util.ObjectLogTag.NC_HISTORY
+                         )
         return ds
+
 
 class PrecipRateToFluxFunction(PreprocessorFunctionBase):
     """A PreprocessorFunction which converts the dependent variable's units, for
@@ -284,15 +338,15 @@ class PrecipRateToFluxFunction(PreprocessorFunctionBase):
         try:
             new_tv = translate.translate(data_mgr.attrs.convention, v_to_translate)
         except KeyError as exc:
-            pod.log.debug(("%s edit_request on %s: caught %r when trying to "
-                "translate '%s'; varlist unaltered."), self.__class__.__name__,
-                v.full_name, exc, v_to_translate.standard_name)
+            pod.log.debug(('%s edit_request on %s: caught %r when trying to '
+                           'translate \'%s\'; varlist unaltered.'), self.__class__.__name__,
+                          v.full_name, exc, v_to_translate.standard_name)
             return None
         new_v = copy_as_alternate(v, data_mgr)
         new_v.translation = new_tv
         return new_v
 
-    def process(self, var, ds):
+    def process(self, var, ds, *args):
         """Convert units of dependent variable *ds* between precip rate and
         precip flux, as specified by the desired units given in *var*. If the
         ``standard_name`` of *ds* is not in the recognized list, return it
@@ -316,16 +370,17 @@ class PrecipRateToFluxFunction(PreprocessorFunctionBase):
             # requested flux, received alternate for rate
             new_units = tv.units * self._liquid_water_density
 
-        var.log.debug(("Assumed implicit factor of water density in units for %s: "
-            "given %s, will convert as %s."),
-            var.full_name, tv.units, new_units,
-            tags=util.ObjectLogTag.NC_HISTORY
-        )
+        var.log.debug(('Assumed implicit factor of water density in units for %s: '
+                       'given %s, will convert as %s.'),
+                      var.full_name, tv.units, new_units,
+                      tags=util.ObjectLogTag.NC_HISTORY
+                      )
         ds[tv.name].attrs['units'] = str(new_units)
         tv.units = new_units
         # actual conversion done by ConvertUnitsFunction; this assures
         # units.convert_dataarray is called with correct parameters.
         return ds
+
 
 class ConvertUnitsFunction(PreprocessorFunctionBase):
     """Convert units on the dependent variable of var, as well as its
@@ -341,13 +396,13 @@ class ConvertUnitsFunction(PreprocessorFunctionBase):
         """
         pass
 
-    def process(self, var, ds):
+    def process(self, var, ds, *args):
         """Convert units on the dependent variable and coordinates of var from
         what's specified in the dataset attributes to what's given in the
         VarlistEntry *var*. Units attributes are updated on the
         :class:`~src.core.TranslatedVarlistEntry`.
         """
-        tv = var.translation # abbreviate
+        tv = var.translation  # abbreviate
         # convert dependent variable
         ds = units.convert_dataarray(
             ds, tv.name, src_unit=None, dest_unit=var.units, log=var.log
@@ -383,6 +438,7 @@ class ConvertUnitsFunction(PreprocessorFunctionBase):
         var.log.info("Converted units on %s.", var.full_name)
         return ds
 
+
 class RenameVariablesFunction(PreprocessorFunctionBase):
     """Renames dependent variables and coordinates to what's expected by the POD.
     """
@@ -391,32 +447,25 @@ class RenameVariablesFunction(PreprocessorFunctionBase):
         """
         pass
 
-    def process(self, var, ds):
+    def process(self, var, ds, *args):
         """Change the names of the DataArrays with Dataset *ds* to the names
         specified by the :class:`~src.diagnostic.VarlistEntry` *var*. Names of
         the dependent variable and all dimension coordinates and scalar
         coordinates (vertical levels) are changed in-place.
         """
-        tv = var.translation # abbreviate
+        tv = var.translation  # abbreviate
         rename_d = dict()
         # rename var
         if tv.name != var.name:
             var.log.debug("Rename '%s' variable in %s to '%s'.",
-                tv.name, var.full_name, var.name,
-                tags=util.ObjectLogTag.NC_HISTORY
-            )
+                          tv.name, var.full_name, var.name,
+                          tags=util.ObjectLogTag.NC_HISTORY
+                          )
             rename_d[tv.name] = var.name
             tv.name = var.name
 
-        # if `rename_coords` is False, only process the time coordinate
-        dim_axes = list(tv.dim_axes.values())
-        if tv.rename_coords is False:
-            dim_axes = [
-                x for x in dim_axes if isinstance(x,diagnostic.VarlistTimeCoordinate)
-            ]
-
         # rename coords
-        for c in dim_axes:
+        for c in tv.dim_axes.values():
             dest_c = var.axes[c.axis]
             if c.name != dest_c.name:
                 var.log.debug("Rename %s axis of %s from '%s' to '%s'.",
@@ -425,16 +474,16 @@ class RenameVariablesFunction(PreprocessorFunctionBase):
                 )
                 rename_d[c.name] = dest_c.name
                 c.name = dest_c.name
-        ## TODO: bounds??
+        # TODO: bounds??
 
         # rename scalar coords
         for c in tv.scalar_coords:
             if c.name in ds:
                 dest_c = var.axes[c.axis]
                 var.log.debug("Rename %s scalar coordinate of %s from '%s' to '%s'.",
-                    c.axis, var.full_name, c.name, dest_c.name,
-                    tags=util.ObjectLogTag.NC_HISTORY
-                )
+                              c.axis, var.full_name, c.name, dest_c.name,
+                              tags=util.ObjectLogTag.NC_HISTORY
+                              )
                 rename_d[c.name] = dest_c.name
                 c.name = dest_c.name
 
@@ -444,7 +493,7 @@ class RenameVariablesFunction(PreprocessorFunctionBase):
 class AssociatedVariablesFunction(PreprocessorFunctionBase):
     """Preprocessor class to copy associated variables to wkdir"""
 
-    def process(self, var, ds):
+    def process(self, var, ds, *args):
 
         try:
             # get string labels from variable object
@@ -484,6 +533,7 @@ class AssociatedVariablesFunction(PreprocessorFunctionBase):
             )
 
         return ds
+
 
 class ExtractLevelFunction(PreprocessorFunctionBase):
     """Extract a requested pressure level from a Dataset containing a 3D variable.
@@ -537,7 +587,7 @@ class ExtractLevelFunction(PreprocessorFunctionBase):
         new_v.translation = new_tv
         return new_v
 
-    def process(self, var, ds):
+    def process(self, var, ds, *args):
         """Determine if level extraction is needed (if *var* has a scalar Z
         coordinate and Dataset *ds* is 3D). If so, return the appropriate 2D
         slice of *ds*, otherwise pass through *ds* unaltered.
@@ -614,7 +664,7 @@ class ApplyScaleAndOffsetFunction(PreprocessorFunctionBase):
         """
         pass
 
-    def process(self, var, ds):
+    def process(self, var, ds, *args):
         """Retrieve the ``scale_factor`` and ``add_offset`` attributes from the
         dependent variable of *ds*, and if set, apply the linear transformation
         to the dependent variable. If both are set, the scaling is applied first
@@ -817,7 +867,9 @@ class MDTFPreprocessorBase(metaclass=util.MDTFABCMeta):
         # mark attrs duplicating values in encoding for deletion
         for k,v in encoding.items():
             if k in attrs:
-                if isinstance(attrs[k], str) and isinstance(v, str):
+                if isinstance(attrs[k], bytes):
+                    compare_ = False
+                elif isinstance(attrs[k], str) and isinstance(v, str):
                     compare_ = (attrs[k].lower() != v.lower())
                 else:
                     compare_ = (attrs[k] != v)
@@ -842,8 +894,15 @@ class MDTFPreprocessorBase(metaclass=util.MDTFABCMeta):
             attrs = getattr(obj, 'attrs', dict())
             for k,v in encoding.items():
                 if k in attrs:
-                    if isinstance(attrs[k], str) and isinstance(v, str):
+                    if isinstance(attrs[k], bytes):
+                        compare_ = False
+                    elif isinstance(attrs[k], str) and isinstance(v, str):
                         compare_ = (attrs[k].lower() != v.lower())
+                    elif not isinstance(attrs[k], np.ndarray) and not hasattr(attrs[k], '__iter__'):
+                        compare_ = (attrs[k] != v)
+                    elif hasattr(attrs[k], '__iter__') and not isinstance(attrs[k], str)\
+                            and not isinstance(attrs[k], bytes):
+                        compare_ = (attrs[k].any() != v)
                     else:
                         compare_ = (attrs[k] != v)
                     if compare_ and k.lower() != 'source':
@@ -932,12 +991,12 @@ class MDTFPreprocessorBase(metaclass=util.MDTFABCMeta):
         for f in self.functions:
             try:
                 var.log.debug("Calling %s on %s.", f.__class__.__name__,
-                    var.full_name)
+                              var.full_name)
                 ds = f.process(var, ds)
             except Exception as exc:
-                raise util.chain_exc(exc, (f"Preprocessing on {var.full_name} "
-                    f"failed at {f.__class__.__name__}."),
-                    util.DataPreprocessEvent
+                raise util.chain_exc(exc, (f'Preprocessing on {var.full_name} '
+                                           f'failed at {f.__class__.__name__}.'),
+                                     util.DataPreprocessEvent
                 )
         return ds
 
@@ -953,13 +1012,13 @@ class MDTFPreprocessorBase(metaclass=util.MDTFABCMeta):
             ds = self.log_history_attr(var, ds)
         except Exception as exc:
             raise util.chain_exc(exc, (f"cleaning attributes to "
-                f"write data for {var.full_name}."), util.DataPreprocessEvent)
+                                       f"write data for {var.full_name}."), util.DataPreprocessEvent)
         try:
             self.write_dataset(var, ds)
         except Exception as exc:
             raise util.chain_exc(exc, f"writing data for {var.full_name}.",
-                util.DataPreprocessEvent)
-        del ds # shouldn't be necessary
+                                 util.DataPreprocessEvent)
+        del ds  # shouldn't be necessary
 
     def process(self, var):
         """Top-level wrapper method for doing all preprocessing of data files
@@ -983,6 +1042,7 @@ class SingleFilePreprocessor(MDTFPreprocessorBase):
         *var*, using :meth:`read_one_file`.
         """
         return self.read_one_file(var, var.local_data)
+
 
 class DaskMultiFilePreprocessor(MDTFPreprocessorBase):
     """A Preprocessor class that uses xarray's dask support to
@@ -1059,8 +1119,359 @@ class SampleDataPreprocessor(SingleFilePreprocessor):
     # NCAR-CAM5.timeslice for Travis CI
     pass
 
+
 class DefaultPreprocessor(DaskMultiFilePreprocessor):
     """Implementation class for :class:`MDTFPreprocessorBase` for the general
     use case. Includes all implemented functionality and handles multi-file data.
     """
     _file_preproc_functions = []
+
+
+class MultirunDaskMultiFilePreprocessor(DaskMultiFilePreprocessor):
+    """A Preprocessor class that uses xarray's dask support to
+    preprocess model data provided as one or multiple netcdf files per
+    variable, using xarray `open_mfdataset()
+    <https://xarray.pydata.org/en/stable/generated/xarray.open_mfdataset.html>`__.
+    """
+
+    def __init__(self, data_mgr):
+        # initialize PreprocessorFunctionBase objects
+        self.file_preproc_functions = \
+            [cls_(data_mgr) for cls_ in self._file_preproc_functions]
+
+    def edit_request(self, data_mgr, *args):
+        """Edit *pod*\'s data request, based on the child class's functionality. If
+        the child class has a function that can transform data in format *X* to
+        format *Y* and the POD requests *X*, this method should insert a
+        backup/fallback request for *Y*.
+        """
+        for func in self.file_preproc_functions:
+            func.edit_request(data_mgr, *args)
+
+
+class MultirunDefaultPreprocessor(SampleDataPreprocessor):
+    """mplementation class for :class:`MDTFPreprocessorBase` intended for use
+    on sample model data distributed with the package. Assumes all data for each
+    multirun case is in one netCDF file.
+    """
+    _XarrayParserClass = xr_parser.MultirunDefaultDatasetParser
+
+    def __init__(self, data_mgr):
+        config = core.ConfigManager()
+        self.overwrite_ds = config.get('overwrite_file_metadata', False)
+
+        self.WK_DIR = data_mgr.MODEL_WK_DIR
+        self.convention = data_mgr.convention
+        self.pod_convention = self.convention
+
+        if not data_mgr.nc_largefile:
+            self.nc_format = "NETCDF4_CLASSIC"
+        else:
+            self.nc_format = "NETCDF4"
+        # HACK only used for _FillValue workaround in clean_output_encoding
+        self.output_to_ncl = ('ncl' in data_mgr.runtime_requirements)
+
+        # initialize xarray parser
+        self.parser = self._XarrayParserClass(data_mgr)
+        # initialize PreprocessorFunctionBase objects
+        self.functions = [cls_(data_mgr) for cls_ in self._functions]
+
+    @property
+    def _functions(self):
+        """Determine which PreprocessorFunctions are applicable to the current
+        package run, defaulting to all of them.
+
+        Returns:
+            tuple of classes (inheriting from :class:`PreprocessorFunctionBase`)
+            listing the preprocessing functions to be called, in order.
+        """
+        config = core.ConfigManager()
+        if config.get('disable_preprocessor', False):
+            # omit unit conversion functions; following two functions necessary
+            # in all cases to obtain correct output
+            return (
+                MultirunCropDateRangeFunction, MultirunRenameVariablesFunction
+            )
+        else:
+            # normal operation: run all functions
+            return (
+                MultirunCropDateRangeFunction,
+                MultirunPrecipRateToFluxFunction, MultirunConvertUnitsFunction,
+                MultirunExtractLevelFunction, MultirunRenameVariablesFunction,
+                MultirunAssociatedVariablesFunction
+            )
+
+    # Same as MDTFPreprocessorBase: edit_request, but only need data_mgr arg
+    def edit_request(self, data_mgr, *args):
+        """Top-level method to edit each case's data request in the data_mgr, based on the child
+        class's functionality. Calls the :meth:`~PreprocessorFunctionBase.edit_request`
+        method on all included PreprocessorFunctions.
+        """
+        for func in self.functions:
+            func.edit_request(data_mgr, *args)
+
+    def process(self, var, casename: str):
+        """Top-level wrapper method for doing all preprocessing of data files
+        associated with the POD variable *var*.
+        """
+        ds = self.load_ds(var)
+        ds = self.process_ds(var, ds, casename)
+        self.write_ds(var, ds)
+        var.log.debug("Successful preprocessor exit on %s.", var)
+
+    def process_ds(self, var, ds, casename: str):
+        """Top-level method to call the :meth:`~PreprocessorFunctionBase.process`
+        of each included PreprocessorFunction on the Dataset *ds*. Spun out into
+        its own method so that child classes can modify it.
+        """
+        for f in self.functions:
+            try:
+                var.log.debug("Calling %s on %s.", f.__class__.__name__,
+                              var.full_name)
+                ds = f.process(var, ds, casename)
+            except Exception as exc:
+                raise util.chain_exc(exc, (f'Preprocessing on {var.full_name} '
+                                           f'failed at {f.__class__.__name__}.'),
+                                     util.DataPreprocessEvent
+                                     )
+        return ds
+
+    def write_ds(self, var, ds):
+        """Top-level method to write out processed dataset *ds*; spun out so
+        that child classes can modify it. Calls the :meth:`write_dataset` method
+        implemented by the child class.
+        """
+        for casename, wkdir in self.WK_DIR.items():
+            if wkdir in var.dest_path:
+                break
+
+        path_str = util.abbreviate_path(var.dest_path, wkdir, '$WK_DIR')
+        var.log.info("Writing %d mb to %s", ds.nbytes / (1024*1024), path_str)
+        try:
+            ds = self.clean_output_attrs(var, ds)
+            ds = self.log_history_attr(var, ds)
+        except Exception as exc:
+            raise util.chain_exc(exc, (f"cleaning attributes to "
+                                       f"write data for {var.full_name}."), util.DataPreprocessEvent)
+        try:
+            self.write_dataset(var, ds)
+        except Exception as exc:
+            raise util.chain_exc(exc, f"writing data for {var.full_name}.",
+                                 util.DataPreprocessEvent)
+        del ds  # shouldn't be necessary
+
+
+class MultirunCropDateRangeFunction(CropDateRangeFunction):
+
+    # Same as CropDateRangeFunction: edit_request, but only need data_mgr arg
+    def edit_request(self, data_mgr, *args):
+        """No-op for this PreprocessorFunction, since no alternate data is needed.
+        """
+        pass
+
+
+class MultirunRenameVariablesFunction(RenameVariablesFunction):
+    """Renames dependent variables and coordinates to what's expected by the POD.
+    """
+
+    # Same as RenameVariablesFunction: edit_request, but only need data_mgr arg
+    def edit_request(self, data_mgr, *args):
+        """No-op for this PreprocessorFunction, since no alternate data is needed.
+        """
+        pass
+
+
+class MultirunPrecipRateToFluxFunction(PrecipRateToFluxFunction):
+    """A PreprocessorFunction which converts the dependent variable's units, for
+    the specific case of precipitation. Flux and precip rate differ by a factor
+    of the density of water, so can't be handled by the udunits2 implementation
+    provided by :class:`~src.units.Units`. Instead, they're handled here as a
+    special case. The general case of unit conversion is handled by
+    :class:`ConvertUnitsFunction`.
+
+    CF ``standard_names`` recognized for the conversion are ``precipitation_flux``,
+    ``convective_precipitation_flux``, ``large_scale_precipitation_flux``, and
+    likewise for ``*_rate``.
+    """
+
+    @multirun_edit_request_wrapper
+    def edit_request(self, v, data_mgr, *args):
+        """Edit *case*\'s Varlist prior to query. If the
+        :class:`~src.MultirunDiagnostic.VarlistEntry` *v* has a ``standard_name`` in the
+        recognized list, insert an alternate VarlistEntry whose translation
+        requests the complementary type of variable (i.e., if given rate, add an
+        entry for flux; if given flux, add an entry for rate.)
+
+        The signature of this method is altered by the :func:`multirun_edit_request_wrapper`
+        decorator.
+        """
+        std_name = getattr(v, 'standard_name', "")
+        if std_name not in self._rate_d and std_name not in self._flux_d:
+            # logic not applicable to this VE; do nothing
+            return None
+        # construct dummy var to translate (rather than modifying std_name & units)
+        # on v's translation) because v may not have a translation
+        if std_name in self._rate_d:
+            # requested rate, so add alternate for flux
+            v_to_translate = copy_as_alternate(
+                v, data_mgr,
+                standard_name = self._rate_d[std_name],
+                units = units.to_cfunits(v.units) * self._liquid_water_density
+            )
+        elif std_name in self._flux_d:
+            # requested flux, so add alternate for rate
+            v_to_translate = copy_as_alternate(
+                v, data_mgr,
+                standard_name = self._flux_d[std_name],
+                units = units.to_cfunits(v.units) / self._liquid_water_density
+            )
+
+        translate = core.VariableTranslator()
+        try:
+            new_tv = translate.translate(data_mgr.attrs.convention, v_to_translate)
+        except KeyError as exc:
+            self.log.debug(('%s edit_request on %s: caught %r when trying to '
+                           'translate \'%s\'; varlist unaltered.'), self.__class__.__name__,
+                          v.full_name, exc, v_to_translate.standard_name)
+            return None
+        new_v = copy_as_alternate(v, data_mgr)
+        new_v.translation = new_tv
+        return new_v
+
+
+class MultirunConvertUnitsFunction(ConvertUnitsFunction):
+    """Convert units on the dependent variable of var, as well as its
+    (non-time) dimension coordinate axes, from what's specified in the dataset
+    attributes to what's requested in the :class:`~src.diagnostic.VarlistEntry`.
+
+    Unit conversion is implemented by
+    `cfunits <https://ncas-cms.github.io/cfunits/index.html>`__; see
+    :doc:`src.units`.
+    """
+
+    # Same as ConvertUnitsFunction: edit_request, but only need data_mgr arg
+    def edit_request(self, data_mgr, *args):
+        """No-op for this PreprocessorFunction, since no alternate data is needed.
+        """
+        pass
+
+
+class MultirunExtractLevelFunction(ExtractLevelFunction):
+    """Extract a requested pressure level from a Dataset containing a 3D variable.
+
+    .. note::
+
+       Unit conversion on the vertical coordinate is implemented, but
+       parametric vertical coordinates and coordinate interpolation are not.
+       If a pressure level is requested that isn't present in the data,
+       :meth:`process` raises a KeyError.
+       This class is identical to parent ExtractLevelFunction except that pod data is obtained
+       from data_mgr parameter with information from the MultirunDiagnostic object
+       rather than the pod parameter
+    """
+    @multirun_edit_request_wrapper
+    def edit_request(self, v, data_mgr, *args):
+        """Edit the *pod*'s :class:`~src.diagnostic.Varlist` prior to data query.
+        If given a :class:`~src.MultirunDiagnostic.VarlistEntry` *v* has a
+        ``scalar_coordinate`` for the Z axis (i.e., is requesting data on a
+        pressure level), return a copy of *v* with that ``scalar_coordinate``
+        removed (i.e., requesting a full 3D variable) to be used as an alternate
+        variable for *v*.
+
+        The signature of this method is altered by the :func:`multirun_edit_request_wrapper`
+        decorator.
+        """
+        if not v.translation:
+            # hit this if VE not defined for this model naming convention;
+            # do nothing for this v
+            return None
+        elif v.translation.get_scalar('Z') is None:
+            # hit this if VE didn't request Z level extraction; do nothing
+            return None
+
+        tv = v.translation # abbreviate
+        if len(tv.scalar_coords) == 0:
+            raise AssertionError # should never get here
+        elif len(tv.scalar_coords) > 1:
+            raise NotImplementedError()
+        # wraps method in data_model; makes a modified copy of translated var
+        # restore name to that of 4D data (eg. 'u500' -> 'ua')
+        new_ax_set = set(v.axes_set).add('Z')
+        if v.use_exact_name:
+            new_tv_name = v.name
+        else:
+            new_tv_name = core.VariableTranslator().from_CF_name(
+                data_mgr.attrs.convention, v.standard_name, new_ax_set
+            )
+        new_tv = tv.remove_scalar(
+            tv.scalar_coords[0].axis,
+            name = new_tv_name
+        )
+        new_v = copy_as_alternate(v, data_mgr)
+        new_v.translation = new_tv
+        return new_v
+
+    class MultirunApplyScaleAndOffsetFunction(ApplyScaleAndOffsetFunction):
+        """If the Dataset has ``scale_factor`` and ``add_offset`` attributes set,
+        apply the corresponding constant linear transformation to the dependent
+        variable's values and unset these attributes. See `CF convention documentation
+        <http://cfconventions.org/Data/cf-conventions/cf-conventions-1.8/cf-conventions.html#attribute-appendix>`__
+        on the ``scale_factor`` and ``add_offset`` attributes.
+
+        .. note::
+
+           By default this function is not applied. It's only provided to implement
+           workarounds for running the package on data with metadata (i.e., units)
+           that are known to be incorrect.
+        """
+
+        # Same as ApplyScaleAndOffsetFunction: edit_request, but only need data_mgr arg
+        def edit_request(self, data_mgr, *args):
+            """No-op for this PreprocessorFunction, since no alternate data is needed.
+            Overrides ApplyScaleAndOffsetFunction: edit_request, and does not have pod parameter
+            """
+            pass
+
+
+class MultirunAssociatedVariablesFunction(AssociatedVariablesFunction):
+    """Preprocessor class to copy associated variables to wkdir"""
+
+    def process(self, var, ds, casename: str):
+
+        try:
+            # get string labels from variable object
+            pod_wkdir = var._parent.POD_WK_DIR
+
+            # iterate over active associated files and get current local paths
+            associated_files = list(
+                var.iter_associated_files_keys(status=core.ObjectStatus.ACTIVE)
+            )
+            associated_files = [d_key.local_data for d_key in associated_files]
+
+            # flatten a list of nested lists
+            associated_files = [
+                d_key for sublist in associated_files for d_key in sublist
+            ]
+
+            # construct destination paths in wkdir
+            associated_files_dst = [
+                f"{pod_wkdir}/assoc/{casename}.{os.path.basename(x)}"
+                for x in associated_files
+            ]
+
+            # create `assoc` directory and copy files
+            os.makedirs(f"{pod_wkdir}/assoc/", exist_ok=True)
+            _ = [
+                shutil.copy(*x)
+                for x in list(zip(associated_files, associated_files_dst))
+            ]
+
+            # Replace object attribute with CSV list of final paths in wkdir
+            var.associated_files = str(",").join(associated_files_dst)
+
+        except Exception as exc:
+            var.log.debug(
+                f"Error encountered with preprocessing associated files: {exc}"
+            )
+
+        return ds

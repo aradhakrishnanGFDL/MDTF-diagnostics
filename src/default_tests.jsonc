@@ -69,7 +69,7 @@
   // "$" and will be expended to their current values when the framework runs.
 
   // Parent directory containing observational data used by individual PODs.
-  "OBS_DATA_ROOT": "../inputdata/obs_data",
+  "OBS_DATA_ROOT": "../inputdata/obs_data/",
 
   // Parent directory containing results from different models.
   "MODEL_DATA_ROOT": "../inputdata/model/",
