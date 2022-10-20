@@ -1,6 +1,11 @@
 {
-  "files": ["contributing.md"],
+  "projectName": "all-contributors",
+  "projectOwner": "all-contributors",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": ["README.md"],
   "imageSize": 100,
+  "commit": false,
   "contributorsPerLine": 7,
   "contributorsSortAlphabetically": false,
   "badgeTemplate": "[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#contributors)",
@@ -12,6 +17,7 @@
       "link": "[<%= symbol %>](<%= url %> \"<%= description %>\"),"
     }
   },
-  "skipCi": "true",
+  "linkToUsage": true,
+  "skipCi": true,
   "contributors": []
 }
