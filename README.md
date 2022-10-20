@@ -1,6 +1,6 @@
 # MDTF-diagnostics: A Portable Framework for Weather and Climate Model Data Analysis
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+[![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 [![Documentation Status](https://readthedocs.org/projects/mdtf-diagnostics/badge/?version=latest)](https://mdtf-diagnostics.readthedocs.io/en/latest/?badge=latest) [![Build Status](https://travis-ci.com/NOAA-GFDL/MDTF-diagnostics.svg?branch=main)](https://travis-ci.com/NOAA-GFDL/MDTF-diagnostics) [![Total alerts](https://img.shields.io/lgtm/alerts/g/NOAA-GFDL/MDTF-diagnostics.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/NOAA-GFDL/MDTF-diagnostics/alerts/) [![Language grade: Python](https://img.shields.io/lgtm/grade/python/g/NOAA-GFDL/MDTF-diagnostics.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/NOAA-GFDL/MDTF-diagnostics/context:python)
@@ -177,6 +177,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
   <tbody>
     <tr>
       <td align="center"><a href="https://github.com/aradhakrishnanGFDL"><img src="https://avatars.githubusercontent.com/u/26334954?v=4?s=100" width="100px;" alt="Aparna Radhakrishnan"/><br /><sub><b>Aparna Radhakrishnan</b></sub></a><br /><a href="https://github.com/aradhakrishnanGFDL/MDTF-diagnostics/pulls?q=is%3Apr+reviewed-by%3AaradhakrishnanGFDL" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/aradhakrishnanGFDL/MDTF-diagnostics/commits?author=aradhakrishnanGFDL" title="Tests">⚠️</a></td>
+      <td align="center"><a href="https://github.com/wrongkindofdoctor"><img src="https://avatars.githubusercontent.com/u/20195932?v=4?s=100" width="100px;" alt="Jess"/><br /><sub><b>Jess</b></sub></a><br /><a href="https://github.com/aradhakrishnanGFDL/MDTF-diagnostics/commits?author=wrongkindofdoctor" title="Documentation">📖</a></td>
     </tr>
   </tbody>
 </table>
