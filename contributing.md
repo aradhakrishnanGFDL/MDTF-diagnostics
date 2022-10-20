@@ -1,7 +1,7 @@
 
 ## How to contribute to MDTF framework
 
-#### **Did you find a bug?**
+#### Did you find a bug?
 
 * **Ensure the bug was not already reported** by searching on GitHub under [Issues](https://github.com/NOAA-GFDL/MDTF-diagnostics/issues?q=is%3Aissue+is%3Aopen).
 
