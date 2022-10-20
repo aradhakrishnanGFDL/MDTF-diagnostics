@@ -50,7 +50,7 @@ Model Diagnostics Task Force framework team is dedicated to providing a respectf
    and telling someone that you are sorry is an act of empathy that doesn’t
    automatically imply an admission of guilt.
 
-* **6. Give due credit and avoid miscredit   
+* **6. Give due credit and avoid miscredit**.   
 
 Motivate yourself and your community by acknowledging and giving credit to the original source, be it an individual-or-group, data-or-code, an inception of an idea, and so on, in different project forums. Discourage miscredit to foster a welcoming, inclusive environment.
 We strive for the highest standards of scientific integrity. This includes sharing ideas and information, keeping accurate and complete records, and giving due credit to the contributions of others. Undisclosed conflicts of interest and scientific misconduct, including fabrication, falsification, and plagiarism, are incompatible with this code.
