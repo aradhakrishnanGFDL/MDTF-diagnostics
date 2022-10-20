@@ -176,7 +176,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <table>
   <tbody>
     <tr>
-      <td align="center"><a href="https://github.com/aradhakrishnanGFDL"><img src="https://avatars.githubusercontent.com/u/26334954?v=4?s=100" width="100px;" alt="Aparna Radhakrishnan"/><br /><sub><b>Aparna Radhakrishnan</b></sub></a><br /><a href="https://github.com/aradhakrishnanGFDL/MDTF-diagnostics/pulls?q=is%3Apr+reviewed-by%3AaradhakrishnanGFDL" title="Reviewed Pull Requests">👀</a></td>
+      <td align="center"><a href="https://github.com/aradhakrishnanGFDL"><img src="https://avatars.githubusercontent.com/u/26334954?v=4?s=100" width="100px;" alt="Aparna Radhakrishnan"/><br /><sub><b>Aparna Radhakrishnan</b></sub></a><br /><a href="https://github.com/aradhakrishnanGFDL/MDTF-diagnostics/pulls?q=is%3Apr+reviewed-by%3AaradhakrishnanGFDL" title="Reviewed Pull Requests">👀</a> <a href="https://github.com/aradhakrishnanGFDL/MDTF-diagnostics/commits?author=aradhakrishnanGFDL" title="Tests">⚠️</a></td>
     </tr>
   </tbody>
 </table>
