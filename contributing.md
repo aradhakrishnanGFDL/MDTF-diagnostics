@@ -39,10 +39,10 @@ Changes that are cosmetic in nature and do not add anything substantial to the s
 
 #### ** Do you have a POD code submission that you'd like to contribute?**
 
-* Please double check the [POD development checklist] (https://mdtf-diagnostics.readthedocs.io/en/latest/sphinx/dev_checklist.html?highlight=POD%20%20deve)
+* Please double check the [POD development checklist](https://mdtf-diagnostics.readthedocs.io/en/latest/sphinx/dev_checklist.html?highlight=POD%20%20deve)
 * Please check out this [cheatsheet](https://mdtf-diagnostics.readthedocs.io/en/latest/sphinx/dev_cheatsheet.html?highlight=cheatsheet) and start a PR!
 
-We encourage you to pitch in. Many thanks to our wonderful contributors [link tba]
+We encourage you to pitch in. Many thanks to our wonderful [contributors](link tba)
 
 Thanks!
 
