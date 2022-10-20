@@ -9,7 +9,7 @@
 
 * If relevant, use the bug report template that appears by default when you open a new issue.
 
-#### **Did you write a patch that fixes a bug?**
+#### **Did you write a patch that fixes a bug? **
 
 * Open a new GitHub pull request with the patch.
 
