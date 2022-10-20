@@ -9,15 +9,17 @@ The MDTF-diagnostics package is a portable framework for running process-oriente
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
+<table>
+  <tr>
+    <td align="center"><a href="https://github.com/aradhakrishnanGFDL"><img src="https://avatars.githubusercontent.com/u/26334954?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Aparna Radhakrishnan</b></sub></a><br /><a href="https://github.com/aradhakrishnanGFDL/toy-mdtf/pulls?q=is%3Apr+reviewed-by%3AaradhakrishnanGFDL" title="Reviewed Pull Requests">👀</a></td>
+    <td align="center"><a href="https://github.com/wrongkindofdoctor"><img src="https://avatars.githubusercontent.com/u/20195932?v=4?s=100" width="100px;" alt=""/><br /><sub><b>Jess</b></sub></a><br /><a href="https://github.com/aradhakrishnanGFDL/toy-mdtf/commits?author=wrongkindofdoctor" title="Code">💻</a></td>
+  </tr>
+</table>
 
 <!-- markdownlint-restore -->
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
-
-<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
-[![All Contributors](https://img.shields.io/badge/all_contributors-13-orange.svg?style=flat-square)](#contributors)
-<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ## What is a POD?
 ![MDTF_logo](<./doc/img/CPO_MAPP_MDTF_Logo.jpg>)
