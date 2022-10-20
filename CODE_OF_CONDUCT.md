@@ -4,6 +4,14 @@ Model Diagnostics Task Force framework team is dedicated to providing a respectf
 
 ## General code of conduct 
 
+Our code of conduct policy for the project community members emphasizes on the following key ground rules:
+
+**1.  Respect everyone's opinion and privacy;
+**2.  Every opinion has value;
+**3.  Listen attentively to everyone's point of view;
+
+Furthermore, the community needs to adhere to the following:
+
 * **1. Be friendly, patient, and welcoming**.    
    We strive to be a community that welcomes and supports
    people of all backgrounds and identities. This includes, but is not limited
@@ -55,11 +63,6 @@ Model Diagnostics Task Force framework team is dedicated to providing a respectf
 Motivate yourself and your community by acknowledging and giving credit to the original source, be it an individual-or-group, data-or-code, an inception of an idea, and so on, in different project forums. Discourage miscredit to foster a welcoming, inclusive environment.
 We strive for the highest standards of scientific integrity. This includes sharing ideas and information, keeping accurate and complete records, and giving due credit to the contributions of others. Undisclosed conflicts of interest and scientific misconduct, including fabrication, falsification, and plagiarism, are incompatible with this code.
 
-While engaging in projects discussions, we expect our project community members to adhere to the following:
-
-**1.  Respect everyone's opinion and privacy;
-**2.  Every opinion has value;
-**3.  Listen attentively to everyone's point of view;
 
 ## Forms of harrassment
 
