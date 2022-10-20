@@ -11,32 +11,51 @@ The MDTF-diagnostics package is a portable framework for running process-oriente
 ![MDTF_logo](<./doc/img/CPO_MAPP_MDTF_Logo.jpg>)
 Each process-oriented diagnostic [POD; [Maloney et al.(2019)](#citations)] targets a specific physical process or emergent behavior to determine how well one or more models represent the process, ensure that models produce the right answers for the right reasons, and identify gaps in the understanding of phenomena. Each POD is independent of other PODs. PODs generate diagnostic figures that can be viewed as an html file using a web browser.
 
+## Available and Planned Diagnostics
 The links in the table below show sample output, a brief description,
 and a link to the full documentation for each currently-supported POD.
 
-| Diagnostic | Contributor |
-| :-------- | :-------- |
-| [Convective Transition Diagnostics](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/convective_transition_diag/convective_transition_diag.html)  | J. David Neelin (UCLA)  |
-|[MJO Teleconnections](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/MJO_teleconnection/MJO_teleconnection.html)   | Eric Maloney (CSU)   |
-| [Extratropical Variance (EOF 500hPa Height)](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/EOF_500hPa/EOF_500hPa.html)   |CESM/AMWG (NCAR)  |
-| [Wavenumber-Frequency Spectra](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/Wheeler_Kiladis/Wheeler_Kiladis.html) | CESM/AMWG (NCAR) |
-| [MJO Spectra and Phasing](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/MJO_suite/MJO_suite.html)  | CESM/AMWG (NCAR)  |
-| [Diurnal Cycle of Precipitation](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/precip_diurnal_cycle/precip_diurnal_cycle.html)  | Rich Neale (NCAR)   |
-| Soil Moisture-Evapotranspiration coupling | Eric Wood (Princeton) |
-| [MJO Propagation and Amplitude ](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_GFDL.CM4.c96L32.am4g10r8/MJO_prop_amp/MJO_prop_amp.html) (example with GFDL CM4 data)  | Xianan Jiang (UCLA)  |
-| [AMOC 3D structure ](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_GFDL-CM2p1/transport_onto_TS/transport_onto_TS.html) (implementation in progress, example with GFDL CM2 model data)  | Xiaobiao Xu (FSU/COAPS)   |
-| [ENSO Moist Static Energy budget](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_CCSM4/MSE_diag/MSE_diag.html) (implementation in progress, example with CCSM4 data)  | Hariharasubramanian Annamalai (U. Hawaii)  |
-| [Warm Rain Microphysics](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/warm_rain_microphysics/documentation) (implementation in progress) | Kentaroh Suzuki (AORI, U. Tokyo)  |
+| Diagnostic                                                                                                                                                                                                              | Contributor                                                          |
+|:------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|:---------------------------------------------------------------------|
+| [Convective Transition Diagnostics](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/convective_transition_diag/convective_transition_diag.html)                  | J. David Neelin (UCLA)                                               |
+| [MJO Teleconnections](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/MJO_teleconnection/MJO_teleconnection.html)                                                | Eric Maloney (CSU)                                                   |
+| [Extratropical Variance (EOF 500hPa Height)](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/EOF_500hPa/EOF_500hPa.html)                                         | CESM/AMWG (NCAR)                                                     |
+| [Wavenumber-Frequency Spectra](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/Wheeler_Kiladis/Wheeler_Kiladis.html)                                             | CESM/AMWG (NCAR)                                                     |
+| [MJO Spectra and Phasing](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/MJO_suite/MJO_suite.html)                                                              | CESM/AMWG (NCAR)                                                     |
+| [Diurnal Cycle of Precipitation](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/precip_diurnal_cycle/precip_diurnal_cycle.html)                                 | Rich Neale (NCAR)                                                    |
+| [Soil Moisture-Evapotranspiration coupling](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/SM_ET_coupling/doc/SM_ET_coupling.rst)                                                                  | Eric Wood (Princeton)                                                |
+| [MJO Propagation and Amplitude ](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_GFDL.CM4.c96L32.am4g10r8/MJO_prop_amp/MJO_prop_amp.html)| Xianan Jiang (UCLA)                                                  |
+| [AMOC 3D structure ](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_GFDL-CM2p1/transport_onto_TS/transport_onto_TS.html) (implementation in progress) | Xiaobiao Xu (FSU/COAPS)                                              |
+| [Warm Rain Microphysics](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/warm_rain_microphysics/documentation) (implementation in progress)                      | Kentaroh Suzuki (AORI, U. Tokyo)                                     |
+| [Mixed Layer Depth](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/mixed_layer_depth/doc/mixed_layer_depth.rst)                                                                                    | Cecilia Bitz (U. Washington), Lettie Roach                            |
+| [Tropical Pacific Sea Level](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/tropical_pacific_sea_level/doc/tropical_pacific_sea_level.rst)                                                         | Jianjun Yin (U. Arizona), Chia-Weh Hsu (GFDL)|
+| [Ocean Surface Flux Diagnostic](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/ocn_surf_flux_diag/doc/ocn_surf_flux_diag.rst)                                                                      | Charlotte A. DeMott (Colorado State University), Chia-Weh Hsu (GFDL) |
+| [Surface Temperature Extremes and Distribution Shape](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/temp_extremes_distshape/doc/temp_extremes_distshape.rst)                                      | J. David Neelin (UCLA), Paul C Loikith (PSU), Arielle Catalano (PSU) |
+| [Eulerian Storm Track](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/eulerian_storm_track/doc/eulerian_storm_track.rst)                                                                           | James Booth (CUNY), Jeyavinoth Jeyaratnam                            |
+| [Blocking Neale](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/blocking_neale/doc/blocking_neale.rst)                                                                                             | Rich Neale (NCAR), Dani Coleman (NCAR)                               |
+| [Moist Static Energy Diagnostic Package](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/ENSO_MSE/doc/ENSO_MSE.rst)                                                                                 | H. Annamalai (U. Hawaii), Jan Hafner (U. Hawaii)                     |
+| [Rossby Wave Sources Diagnostic Package](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/ENSO_RWS/doc/ENSO_RWS.rst)                                                                                 | H. Annamalai (U. Hawaii), Jan Hafner (U. Hawaii)                     |
+| [Precipitation Buoyancy Diagnostic](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/precip_buoy_diag/doc/precip_buoy_diag.rst)                                                                      | J. David Neelin (UCLA), Fiaz Ahmed                                   |
+| [Tropical Cyclone Rain Rate Azimuthal Average](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/TC_Rain/doc/TC_Rain.rst)                                                                      | Daehyun Kim (U. Washington), Nelly Emlaw (U.Washington)|
+| [Top Heaviness Metric](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/top_heaviness_metric/doc/top_heaviness_metric.rst)                                                                      | Zhuo Wang (U.Illinois Urbana-Champaign), Jiacheng Ye (U.Illinois Urbana-Champaign)|
+| [Surface Albedo Feedback](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/albedofb/doc/surface_albedo_feedback.rst) | Cecilia Bitz (U. Washington), Aaron Donahoe (U. Washington), Ed Blanchard, Wei Cheng, Lettie Roach|
+| [Sea Ice Suite](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/seaice_suite/doc/seaice_suite.rst) | Cecilia Bitz (U. Washington), Lettie Roach|
+| [Stratosphere-Troposphere Coupling: Eddy Heat Fluxes](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/stc_eddy_heat_fluxes/doc/stc_eddy_heat_fluxes.rst) | Amy H. Butler (NOAA CSL), Zachary D. Lawrence (CIRES/NOAA PSL)|
+
+
+
 
 ## Example POD Analysis Results
 
-- [Historical run of NOAA-GFDL ESM4](https://extranet.gfdl.noaa.gov/~John.Krasting/mdtf/GFDL-ESM4/), 1980-2014 ([Krasting et al. 2018](#citations))
-- [Historical run of NOAA-GFDL CM4](https://extranet.gfdl.noaa.gov/~John.Krasting/mdtf/GFDL-CM4/), 1980-2014 ([Guo et al. 2018](#citations))
-- [Historical run of NCAR CESM2/CAM4](https://www.cgd.ucar.edu/cms/bundy/Projects/diagnostics/mdtf/mdtf_figures/MDTF_QBOi.EXP1.AMIP.001.save/) 1977-1981, from an earlier version of the package.
+- [Historical run of NOAA-GFDL ESM4](https://extranet.gfdl.noaa.gov/~oar.gfdl.mdtf/mdtf/diagnostic_output/MDTF_ESM4_historical_D1_1996_1999/), 1980-2014 ([Krasting et al. 2018](#citations))
+- [Historical run of NOAA-GFDL CM4](https://extranet.gfdl.noaa.gov/~oar.gfdl.mdtf/mdtf/diagnostic_output/MDTF_CM4_historical_LONG_1980_2014/), 1980-2014 ([Guo et al. 2018](#citations))
+- [Historical run of NCAR CESM2/CAM4](https://extranet.gfdl.noaa.gov/~oar.gfdl.mdtf/mdtf/diagnostic_output/MDTF_QBOi.EXP1.AMIP.001_1977_1981/), 1977-1981
 
 # Quickstart installation instructions
 
-See the [documentation site](https://mdtf-diagnostics.readthedocs.io/en/latest/) for all other information, including more in-depth installation instructions.
+#### See the [documentation site](https://mdtf-diagnostics.readthedocs.io/en/latest/) for all other information, including more in-depth installation instructions.
+
+#### Visit the [GFDL Youtube Channel](https://www.youtube.com/channel/UCCVFLbjYix7RCz1GgKG2QxA) for tutorials on package installation and other MDTF-diagnostics-related topics
 
 ## Prerequisites
 - [Anaconda3](https://docs.anaconda.com/anaconda/install/) or [Miniconda3](https://docs.conda.io/en/latest/miniconda.html). Installation instructions are available [here](https://docs.conda.io/projects/conda/en/latest/user-guide/install/linux.html).
@@ -45,6 +64,7 @@ See the [documentation site](https://mdtf-diagnostics.readthedocs.io/en/latest/)
 - `$` indicates strings to be substituted, e.g., the string `$CODE_ROOT` should be substituted by the actual path to the MDTF-diagnostics directory.
 - Consult the [Getting started](https://mdtf-diagnostics.readthedocs.io/en/latest/sphinx/start_toc.html) section to learn how to run the framework on your own data and configure general settings.
 - POD contributors can consult the **[Developer Cheatsheet](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/doc/sphinx/dev_cheatsheet.rst)** for brief instructions and useful tips
+
 
 ## 1. Install MDTF-diagnostics
 
@@ -63,9 +83,9 @@ See the [documentation site](https://mdtf-diagnostics.readthedocs.io/en/latest/)
 ## 2. Download the sample data
 
 Supporting observational data and sample model data are available via anonymous FTP at [ftp://ftp.cgd.ucar.edu/archive/mdtf](ftp://ftp.cgd.ucar.edu/archive/mdtf).
-- Digested observational data (159 Mb): MDTF_v2.1.a.obs_data.tar (ftp://ftp.cgd.ucar.edu/archive/mdtf/MDTF_v2.1.a.obs_data.tar).
-- NCAR-CESM-CAM sample data (12.3 Gb): model.QBOi.EXP1.AMIP.001.tar (ftp://ftp.cgd.ucar.edu/archive/mdtf/model.QBOi.EXP1.AMIP.001.tar).
-- NOAA-GFDL-CM4 sample data (4.8 Gb): model.GFDL.CM4.c96L32.am4g10r8.tar (ftp://ftp.cgd.ucar.edu/archive/mdtf/model.GFDL.CM4.c96L32.am4g10r8.tar).
+- Digested observational data: run ` wget ftp://ftp.cgd.ucar.edu/archive/mdtf/obs_data_latest/\*` or download the collection "NCAR CGD Anon" from [Globus](https://www.globus.org/)
+- NCAR-CESM-CAM sample data (12.3 Gb): model.QBOi.EXP1.AMIP.001.tar (ftp://ftp.cgd.ucar.edu/archive/mdtf/model.QBOi.EXP1.AMIP.001.tar)
+- NOAA-GFDL-CM4 sample data (4.8 Gb): model.GFDL.CM4.c96L32.am4g10r8.tar (ftp://ftp.cgd.ucar.edu/archive/mdtf/model.GFDL.CM4.c96L32.am4g10r8.tar)
 
 Note that the above paths are symlinks to the most recent versions of the data and will be reported as zero bytes in an FTP client.
 
@@ -117,16 +137,16 @@ We recommend using absolute paths in `default_tests.jsonc`, but relative paths a
 - `src/`: source code of the framework itself.
 - `tests/`: unit tests for the framework.
 
-## 4. Execute the MDTF package with default test settings
+## 4. Execute the MDTF package with default test settings in `single_run` mode
 
 The MDTF framework is run via the wrapper script `$CODE_ROOT/mdtf` that is generated conda_env_install.sh. To test the installation, `% $CODE_ROOT/mdtf --help` will print help text on the command-line options. Note that, if your current working directory is `$CODE_ROOT`, you will need to run `% ./mdtf --help`.
 
 This should print the current version of the framework.
 
-To run the code on the test data using the version of default_tests.jsonc you modified:
-```
-% cd $CODE_ROOT
-% ./mdtf -f src/default_tests.jsonc -v
+To run the code in *single_run* mode on the test data using the version of default_tests.jsonc you modified:
+```commandline
+cd $CODE_ROOT
+./mdtf -f src/default_tests.jsonc -v
 ```
 -v is the "verbose" flag, and will print additional information that may help with debugging if you have issues
 
@@ -142,7 +162,26 @@ Run time may be 10-20 minutes, depending on your system.
 
 - If you re-run the above command,  the result will be written to another subdirectory under `$OUTPUT_DIR`, i.e., output files saved previously will not be overwritten unless you change `overwrite` in the configuration file to `true`.
 
-## 5. Next steps
+## 5. Run the framework in *multi_run* mode (under development)
+The framework is ready to test on PODs that analyze multiple model and or observational datasets (cases) using the tag
+*v3.1.alpha.1*. To run the framework on the
+**[example_multicase](https://github.com/NOAA-GFDL/MDTF-diagnostics/blob/main/diagnostics/example_multicase)** POD,
+modify the example configuration file and run
+```commandline
+./mdtf -f /diagnostics/multirun_config_template.jsonc -v
+``` 
+You can specify your own datasets in the caselist block, or run the example_multicase POD on the same synthetic data
+specified in the configuration file. To generate the synthetic CMIP data, run:
+```commandline
+mamba env create --force -q -f ./src/conda/_env_synthetic_data.yml
+conda activate _MDTF_synthetic_data
+pip install mdtf-test-data
+mkdir mdtf_test_data && cd mdtf_test_data
+mdtf_synthetic.py -c CMIP --startyear 1980 --nyears 5
+mdtf_synthetic.py -c CMIP --startyear 1985 --nyears 5
+```
+
+## 6. Next steps
 
 For more detailed information, consult the [documentation site](https://mdtf-diagnostics.readthedocs.io/en/latest/). The ["Getting Started"](https://mdtf-diagnostics.readthedocs.io/en/latest/sphinx/start_toc.html) section has more detailed information on customizing your installation and running the framework on your own data. Users interested in contributing a POD should consult the ["Developer Information"](https://mdtf-diagnostics.readthedocs.io/en/latest/sphinx/dev_toc.html) section.
 
