@@ -11,6 +11,7 @@ RUN apt update
 # Install dependencies
 RUN apt install -y wget
 RUN apt install -y vim
+RUN apt install -y git
 # Cleanup
 RUN rm -rf /var/lib/apt/lists/* && \
     apt clean
