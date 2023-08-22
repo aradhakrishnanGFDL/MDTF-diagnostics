@@ -40,8 +40,6 @@ COPY tests ${CODE_ROOT}/tests
 # Install conda environments
 ENV CONDA_ROOT=/root/miniconda3
 ENV CONDA_ENV_DIR=/root/miniconda3/envs
-#workaround
-mamba install libarchive -n base -c conda-forge 
 RUN bash ${CODE_ROOT}/src/conda/conda_env_setup.sh --all --conda_root ${CONDA_ROOT} \
     --env_dir ${CONDA_ENV_DIR}
 # Verify installation
