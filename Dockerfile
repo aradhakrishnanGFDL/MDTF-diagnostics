@@ -1,5 +1,5 @@
 # Base OS
-FROM ubuntu:20.04
+FROM ubuntu:latest
 # Container Metadata
 LABEL maintainer="20195932+wrongkindofdoctor@users.noreply.github.com"
 LABEL version="alpha-01"
