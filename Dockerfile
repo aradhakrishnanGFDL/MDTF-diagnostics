@@ -39,8 +39,8 @@ COPY shared ${CODE_ROOT}/shared
 COPY sites ${CODE_ROOT}/sites
 COPY tests ${CODE_ROOT}/tests
 # Install conda environments
-ENV CONDA_ROOT=/root/miniconda3
-ENV CONDA_ENV_DIR=/root/miniconda3/envs
+ENV CONDA_ROOT=/opt/conda/
+ENV CONDA_ENV_DIR=/opt/conda/envs
 RUN conda install -c conda-forge -c default libarchive
 RUN bash ${CODE_ROOT}/src/conda/conda_env_setup.sh --all --conda_root ${CONDA_ROOT} \
     --env_dir ${CONDA_ENV_DIR}
