@@ -1,5 +1,6 @@
 # Base OS
 FROM ubuntu:latest
+FROM continuumio/miniconda3 
 # Container Metadata
 LABEL maintainer="20195932+wrongkindofdoctor@users.noreply.github.com"
 LABEL version="alpha-01"
@@ -17,14 +18,14 @@ RUN rm -rf /var/lib/apt/lists/* && \
     apt clean
 # Install Miniconda3
 # Download the latest shell script
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-# Change permission to execute build script
-RUN chmod +x Miniconda3-latest-Linux-x86_64.sh
-# Run miniconda installation script
-ENV PATH="/root/miniconda3/bin:${PATH}"
-ARG PATH="/root/miniconda3/bin:${PATH}"
-RUN bash ./Miniconda3-latest-Linux-x86_64.sh -b
-RUN rm -f Miniconda3-latest-Linux-x86_64.sh
+####RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+#### Change permission to execute build script
+####RUN chmod +x Miniconda3-latest-Linux-x86_64.sh
+#### Run miniconda installation script
+####ENV PATH="/root/miniconda3/bin:${PATH}"
+####ARG PATH="/root/miniconda3/bin:${PATH}"
+####RUN bash ./Miniconda3-latest-Linux-x86_64.sh -b
+####RUN rm -f Miniconda3-latest-Linux-x86_64.sh
 RUN conda info
 RUN conda init bash
 RUN conda install 'mamba<=1.4.5' -n base -c conda-forge
@@ -40,6 +41,7 @@ COPY tests ${CODE_ROOT}/tests
 # Install conda environments
 ENV CONDA_ROOT=/root/miniconda3
 ENV CONDA_ENV_DIR=/root/miniconda3/envs
+RUN conda install -c conda-forge -c default libarchive
 RUN bash ${CODE_ROOT}/src/conda/conda_env_setup.sh --all --conda_root ${CONDA_ROOT} \
     --env_dir ${CONDA_ENV_DIR}
 # Verify installation
