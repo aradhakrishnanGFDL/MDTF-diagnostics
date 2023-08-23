@@ -28,7 +28,7 @@ RUN rm -rf /var/lib/apt/lists/* && \
 ####RUN rm -f Miniconda3-latest-Linux-x86_64.sh
 RUN conda info
 RUN conda init bash
-RUN conda install 'mamba<=1.4.5' -n base -c conda-forge
+##RUN conda install 'mamba<=1.4.5' -n base -c conda-forge
 # Copy the MDTF-diagnostics package contents from local machine to image
 ENV CODE_ROOT=/proj/MDTF-diagnostics
 COPY src ${CODE_ROOT}/src
