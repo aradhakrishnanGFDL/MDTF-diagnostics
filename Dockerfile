@@ -46,6 +46,6 @@ RUN conda install -c conda-forge -c default libarchive
 RUN bash ${CODE_ROOT}/src/conda/conda_env_setup.sh -e base --conda_root ${CONDA_ROOT} \
     --env_dir ${CONDA_ENV_DIR}
 # Verify installation
-RUN ${CODE_ROOT}/mdtf --version
+RUN /proj/MDTF-diagnostics/mdtf --version
 # Run mdtf on src/default_tests.jsonc
 CMD ["${CODE_ROOT}/mdtf", "-f","${CODE_ROOT}/src/default_tests.jsonc"]
