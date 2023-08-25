@@ -1,6 +1,6 @@
 # Base OS
 FROM ubuntu:latest
-FROM continuumio/miniconda3 
+FROM mamba-org/micromamba-docker:latest
 # Container Metadata
 LABEL maintainer="20195932+wrongkindofdoctor@users.noreply.github.com"
 LABEL version="alpha-01"
@@ -41,10 +41,12 @@ COPY tests ${CODE_ROOT}/tests
 # Install conda environments
 ENV CONDA_ROOT=/opt/conda/
 ENV CONDA_ENV_DIR=/opt/conda/envs
-RUN conda install -c conda-forge -c default libarchive
+#what-really RUN conda install -c conda-forge -c default libarchive
+micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
+
 #add base only for testing
-RUN bash ${CODE_ROOT}/src/conda/conda_env_setup.sh -e base --conda_root ${CONDA_ROOT} \
-    --env_dir ${CONDA_ENV_DIR}
+#c RUN bash ${CODE_ROOT}/src/conda/conda_env_setup.sh -e base --conda_root ${CONDA_ROOT} \
+#c    --env_dir ${CONDA_ENV_DIR}
 # Verify installation
 RUN /proj/MDTF-diagnostics/mdtf --version
 # Run mdtf on src/default_tests.jsonc
