@@ -42,7 +42,8 @@ COPY tests ${CODE_ROOT}/tests
 ENV CONDA_ROOT=/opt/conda/
 ENV CONDA_ENV_DIR=/opt/conda/envs
 RUN conda install -c conda-forge -c default libarchive
-RUN bash ${CODE_ROOT}/src/conda/conda_env_setup.sh --all --conda_root ${CONDA_ROOT} \
+#add base only for testing
+RUN bash ${CODE_ROOT}/src/conda/conda_env_setup.sh -e base --conda_root ${CONDA_ROOT} \
     --env_dir ${CONDA_ENV_DIR}
 # Verify installation
 RUN ${CODE_ROOT}/mdtf --version
