@@ -48,7 +48,7 @@ RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
 #c RUN bash ${CODE_ROOT}/src/conda/conda_env_setup.sh -e base --conda_root ${CONDA_ROOT} \
 #c    --env_dir ${CONDA_ENV_DIR}
 # Verify installation
-RUN /proj/MDTF-diagnostics/mdtf_framework --version
+RUN /proj/MDTF-diagnostics/mdtf_framework.py --help
 # Run mdtf on src/default_tests.jsonc
 # CMD ["${CODE_ROOT}/mdtf", "-f","${CODE_ROOT}/src/default_tests.jsonc"]
-CMD ["/proj/MDTF-diagnostics/mdtf_framework", "--version"]
+CMD ["/proj/MDTF-diagnostics/mdtf_framework.py", "--help"]
