@@ -27,5 +27,5 @@ RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
 #RUN /proj/MDTF-diagnostics/mdtf_framework.py --help
 # Run mdtf on src/default_tests.jsonc
 # CMD ["${CODE_ROOT}/mdtf", "-f","${CODE_ROOT}/src/default_tests.jsonc"]
-ENTRYPOINT ["micromamba shell hook --shell bash","micromamba activate _MDTF_base"]
+ENTRYPOINT ["bash","micromamba shell hook --shell bash","micromamba activate _MDTF_base"]
 CMD ["/proj/MDTF-diagnostics/mdtf_framework.py", "--help"]
