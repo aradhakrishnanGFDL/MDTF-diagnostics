@@ -12,10 +12,10 @@ ARG DEBIAN_FRONTEND=noninteractive
 # Install dependencies
 #cRUN apt install -y wget
 #cRUN apt install -y vim
-RUN apt install -y git
+#c RUN apt install -y git
 # Cleanup
-RUN rm -rf /var/lib/apt/lists/* && \
-    apt clean
+#c RUN rm -rf /var/lib/apt/lists/* && \
+#c    apt clean
 # Install Miniconda3
 # Download the latest shell script
 ####RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
