@@ -43,7 +43,7 @@ ENV CONDA_ROOT=/opt/conda/
 ENV CONDA_ENV_DIR=/opt/conda/envs
 #what-really RUN conda install -c conda-forge -c default libarchive
 RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
-
+RUN micromamba activate _MDTF_base
 #add base only for testing
 #c RUN bash ${CODE_ROOT}/src/conda/conda_env_setup.sh -e base --conda_root ${CONDA_ROOT} \
 #c    --env_dir ${CONDA_ENV_DIR}
