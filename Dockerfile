@@ -27,7 +27,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 ####RUN bash ./Miniconda3-latest-Linux-x86_64.sh -b
 ####RUN rm -f Miniconda3-latest-Linux-x86_64.sh
 RUN micromamba info
-RUN eval "$(micromamba shell hook --shell )
+RUN eval "$(micromamba shell hook --shell )"
 #c RUN micromamba init bash
 ##RUN conda install 'mamba<=1.4.5' -n base -c conda-forge
 # Copy the MDTF-diagnostics package contents from local machine to image
