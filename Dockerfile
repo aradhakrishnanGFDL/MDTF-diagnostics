@@ -8,10 +8,10 @@ LABEL description="This is a docker image for the MDTF-diagnostics package"
 # Disable Prompt During Packages Installation
 ARG DEBIAN_FRONTEND=noninteractive
 # Update Ubuntu Software repository
-RUN apt update
+#RUN apt update
 # Install dependencies
-RUN apt install -y wget
-RUN apt install -y vim
+#cRUN apt install -y wget
+#cRUN apt install -y vim
 RUN apt install -y git
 # Cleanup
 RUN rm -rf /var/lib/apt/lists/* && \
