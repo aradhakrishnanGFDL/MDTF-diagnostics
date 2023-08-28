@@ -1,6 +1,7 @@
 # Base OS
 FROM ubuntu:latest
 FROM mambaorg/micromamba:latest
+USER root
 # Container Metadata
 LABEL maintainer="20195932+wrongkindofdoctor@users.noreply.github.com"
 LABEL version="alpha-01"
