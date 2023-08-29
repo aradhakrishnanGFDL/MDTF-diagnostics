@@ -13,3 +13,7 @@ jobs:
     steps:
       - name: Check PATH
         run: (echo $PATH) || (echo "No path")
+      - name: Activate environment
+        run:  (micromamba activate _MDTF_base) || (echo "Unable to activate environment")
+      - name: Get version of mdtf_framework.py 
+        run:  (mdtf_framework.py --version)
