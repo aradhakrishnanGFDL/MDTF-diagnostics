@@ -22,7 +22,7 @@ COPY tests ${CODE_ROOT}/tests
 # Install conda environments
 ENV CONDA_ROOT=/opt/conda/
 ENV CONDA_ENV_DIR=/opt/conda/envs
-RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
+#RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
 #cRUN micromamba activate _MDTF_base
 # Verify installation
 #RUN /proj/MDTF-diagnostics/mdtf_framework.py --help
