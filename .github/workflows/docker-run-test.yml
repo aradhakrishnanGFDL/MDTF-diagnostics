@@ -14,6 +14,6 @@ jobs:
       - name: Check PATH
         run: (echo $PATH) || (echo "No path")
       - name: Activate environment
-        run: (micromamba shell init --shell bash --root-prefix=/usr/bin/micromamba; micromamba activate; micromamba activate _MDTF_base)
+        run: (micromamba shell init --shell=bash; micromamba activate; micromamba activate _MDTF_base)
       - name: Get version of mdtf_framework.py 
         run: (mdtf_framework.py --version)
