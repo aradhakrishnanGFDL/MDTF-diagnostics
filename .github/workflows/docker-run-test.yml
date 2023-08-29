@@ -1,7 +1,7 @@
-name: CI
+name: docker-run-minitest
 on:
-  push:
-    branches: [ aradhakrishnanGFDL-patch5 ]
+  pull_request:
+    branches: [ main ]
 jobs:
   container-test-job:
     runs-on: ubuntu-latest
