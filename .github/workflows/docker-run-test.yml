@@ -13,8 +13,9 @@ jobs:
     steps:
       - name: Check PATH
         run: (echo $PATH) || (echo "No path")
-      - name: Activate environment
+      - name: Shell init for micromamba
         run:  (eval "$(micromamba shell hook --shell bash))"
+      - name: Activate environment
               micromamba activate _MDTF_base  
       - name: Get version of mdtf_framework.py 
         run:  (mdtf_framework.py --version)
