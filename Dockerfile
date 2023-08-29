@@ -22,11 +22,11 @@ COPY tests ${CODE_ROOT}/tests
 # Install conda environments
 ENV CONDA_ROOT=/opt/conda/
 ENV CONDA_ENV_DIR=/opt/conda/envs
-#RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
+RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
 #cRUN micromamba activate _MDTF_base
 # Verify installation
 #RUN /proj/MDTF-diagnostics/mdtf_framework.py --help
 # Run mdtf on src/default_tests.jsonc
 # CMD ["${CODE_ROOT}/mdtf", "-f","${CODE_ROOT}/src/default_tests.jsonc"]
-#later ENTRYPOINT ["bash","micromamba shell hook --shell bash","micromamba activate _MDTF_base"]
-#later CMD ["/proj/MDTF-diagnostics/mdtf_framework.py", "--help"]
+ENTRYPOINT ["micromamba activate _MDTF_base"]
+CMD ["/bin/bash", "--help"]
