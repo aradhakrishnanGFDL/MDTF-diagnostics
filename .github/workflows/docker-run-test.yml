@@ -16,6 +16,6 @@ jobs:
       - name: Shell init for micromamba
         run:  (eval "$(micromamba shell hook --shell bash))"
       - name: Activate environment
-              micromamba activate _MDTF_base  
+        run: (micromamba activate _MDTF_base)
       - name: Get version of mdtf_framework.py 
-        run:  (mdtf_framework.py --version)
+        run: (mdtf_framework.py --version)
