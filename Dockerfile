@@ -24,6 +24,7 @@ ENV CONDA_ROOT=/opt/conda/
 ENV CONDA_ENV_DIR=/opt/conda/envs
 USER mambauser
 RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
+RUN export PATH="/proj/MDTF-diagnostics/:$PATH"
 #cRUN micromamba activate _MDTF_base
 # Verify installation
 #RUN /proj/MDTF-diagnostics/mdtf_framework.py --help
