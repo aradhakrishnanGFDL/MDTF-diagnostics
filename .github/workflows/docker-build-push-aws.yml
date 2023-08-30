@@ -3,7 +3,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: Build and push image to Amazon ECR
+name: Build and push image to Amazon ECR.
 
 on:
   pull_request:
