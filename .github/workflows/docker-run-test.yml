@@ -11,14 +11,9 @@ jobs:
         NODE_ENV: development
       options: --cpus 1
     steps:
-      - uses: mamba-org/setup-micromamba@v1
-        with:
-          micromamba-version: '1.3.1-0'
-          init-shell: >-
-            bash
-            powershell
-          post-cleanup: 'all'
+      - name: Check PATH
+        run: (echo $PATH) || (echo "No path")
       - name: Activate environment
-        run: (micromamba activate; micromamba activate _MDTF_base)
+        run: (micromamba shell init --shell=bash; /github/home/.bashrc; micromamba activate; micromamba activate _MDTF_base)
       - name: Get version of mdtf_framework.py 
         run: (mdtf_framework.py --version)
