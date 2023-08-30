@@ -8,8 +8,9 @@ USER root
 
 # if your image defaults to a non-root user, then you may want to make the
 # next 3 ARG commands match the values in your image. You can get the values
-# by running: docker run --rm -it my/image id -a
-ARG MAMBA_USER=mambauser
+# by running: docker run --rm -it my/image id -a 
+
+ARG MAMBA_USER=mambauser 
 ARG MAMBA_USER_ID=57439
 ARG MAMBA_USER_GID=57439
 ENV MAMBA_USER=$MAMBA_USER
@@ -28,6 +29,7 @@ RUN /usr/local/bin/_dockerfile_initialize_user_accounts.sh && \
 
 USER $MAMBA_USER
 
+
 SHELL ["/usr/local/bin/_dockerfile_shell.sh"]
 
 ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
@@ -36,6 +38,8 @@ ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
 # ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "my_entrypoint_program"]
 
 RUN micromamba info
+RUN "echo done"
+
 RUN micromamba shell hook --shell bash
 RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
 
@@ -46,7 +50,7 @@ LABEL maintainer="20195932+wrongkindofdoctor@users.noreply.github.com"
 LABEL version="alpha-01"
 LABEL description="This is a docker image for the MDTF-diagnostics package"
 # Disable Prompt During Packages Installation
-ARG DEBIAN_FRONTEND=noninteractive
+#ARG DEBIAN_FRONTEND=noninteractive
 
 # Copy the MDTF-diagnostics package contents from local machine to image
 ENV CODE_ROOT=/proj/MDTF-diagnostics
@@ -63,6 +67,7 @@ ENV CONDA_ENV_DIR=/opt/conda/envs
 
 #USER mambauser
 #RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
+
 ENV PATH="${PATH}:/proj/MDTF-diagnostics/"
 #cRUN micromamba activate _MDTF_base
 # Verify installation
