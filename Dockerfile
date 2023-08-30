@@ -6,38 +6,7 @@ FROM mambaorg/micromamba:latest as micromamba
 
 USER root
 
-# if your image defaults to a non-root user, then you may want to make the
-# next 3 ARG commands match the values in your image. You can get the values
-# by running: docker run --rm -it my/image id -a 
-
-ARG MAMBA_USER=mambauser 
-ARG MAMBA_USER_ID=57439
-ARG MAMBA_USER_GID=57439
-ENV MAMBA_USER=$MAMBA_USER
-ENV MAMBA_ROOT_PREFIX="/opt/conda"
-ENV MAMBA_EXE="/bin/micromamba"
-
-#########
-
-COPY --from=micromamba "$MAMBA_EXE" "$MAMBA_EXE"
-COPY --from=micromamba /usr/local/bin/_activate_current_env.sh /usr/local/bin/_activate_current_env.sh
-COPY --from=micromamba /usr/local/bin/_dockerfile_shell.sh /usr/local/bin/_dockerfile_shell.sh
-COPY --from=micromamba /usr/local/bin/_entrypoint.sh /usr/local/bin/_entrypoint.sh
-COPY --from=micromamba /usr/local/bin/_dockerfile_initialize_user_accounts.sh /usr/local/bin/_dockerfile_initialize_user_accounts.sh
-COPY --from=micromamba /usr/local/bin/_dockerfile_setup_root_prefix.sh /usr/local/bin/_dockerfile_setup_root_prefix.sh
-
-RUN /usr/local/bin/_dockerfile_initialize_user_accounts.sh && \
-    /usr/local/bin/_dockerfile_setup_root_prefix.sh
-
-USER $MAMBA_USER
-
-
-SHELL ["/usr/local/bin/_dockerfile_shell.sh"]
-
-ENTRYPOINT ["/usr/local/bin/_entrypoint.sh"]
-# Optional: if you want to customize the ENTRYPOINT and have a conda
-# environment activated, then do this:
-# ENTRYPOINT ["/usr/local/bin/_entrypoint.sh", "my_entrypoint_program"]
+USER $MAMBA_USER  
 
 RUN micromamba info
 RUN "echo done"
@@ -46,7 +15,6 @@ RUN micromamba shell hook --shell bash
 RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
 
 ##
-
 # Container Metadata
 LABEL maintainer="20195932+wrongkindofdoctor@users.noreply.github.com"
 LABEL version="alpha-01"
@@ -56,7 +24,7 @@ LABEL description="This is a docker image for the MDTF-diagnostics package"
 
 # Copy the MDTF-diagnostics package contents from local machine to image
 ENV CODE_ROOT=/proj/MDTF-diagnostics
-COPY src ${CODE_ROOT}/src
+COPY src ${CODE_ROOT}/src                          
 COPY data ${CODE_ROOT}/data
 #COPY diagnostics ${CODE_ROOT}/diagnostics
 COPY mdtf_framework.py ${CODE_ROOT}
