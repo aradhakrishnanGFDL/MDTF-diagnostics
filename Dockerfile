@@ -1,6 +1,6 @@
 # Base OS
 FROM ubuntu:latest
-FROM mambaorg/micromamba:1.5.0 as micromamba
+FROM mambaorg/micromamba:latest as micromamba
 
 #micromamba set up
 
