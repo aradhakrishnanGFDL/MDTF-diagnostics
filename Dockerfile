@@ -10,7 +10,7 @@ RUN micromamba info
 
 
 RUN micromamba shell hook --shell bash
-RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
+#RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
 
 ##
 # Container Metadata
@@ -34,7 +34,7 @@ ENV CONDA_ROOT=/opt/conda/
 ENV CONDA_ENV_DIR=/opt/conda/envs
 
 #USER mambauser
-#RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
+RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
 
 ENV PATH="${PATH}:/proj/MDTF-diagnostics/"
 #cRUN micromamba activate _MDTF_base
