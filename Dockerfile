@@ -6,10 +6,8 @@ FROM mambaorg/micromamba:latest as micromamba
 
 USER root
 
-USER $MAMBA_USER  
-
 RUN micromamba info
-RUN "echo done"
+
 
 RUN micromamba shell hook --shell bash
 RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
