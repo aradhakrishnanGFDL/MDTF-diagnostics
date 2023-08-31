@@ -16,5 +16,3 @@ jobs:
       - name: Activate environment
         shell: bash 
         run: (eval "$(micromamba shell hook -s bash -p ~/conda)"; micromamba activate; micromamba activate _MDTF_base;mdtf_framework.py --version)
-      - name: Get version of mdtf_framework.py 
-        run: (mdtf_framework.py --version)
