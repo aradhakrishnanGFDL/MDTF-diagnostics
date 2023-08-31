@@ -14,6 +14,7 @@ jobs:
       - name: Check PATH
         run: (echo $PATH) || (echo "No path")
       - name: Activate environment
-        run: (micromamba activate; micromamba activate _MDTF_base)
+        shell: bash 
+        run: (micromamba shell hook -s bash -p ~/conda; micromamba activate; micromamba activate _MDTF_base)
       - name: Get version of mdtf_framework.py 
         run: (mdtf_framework.py --version)
