@@ -35,6 +35,8 @@ ENV CONDA_ENV_DIR=/opt/conda/envs
 
 #USER mambauser
 RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_base.yml
+RUN micromamba create -f /proj/MDTF-diagnostics/src/conda/env_NCL_base.yml
+
 
 ENV PATH="${PATH}:/proj/MDTF-diagnostics/"
 #cRUN micromamba activate _MDTF_base
