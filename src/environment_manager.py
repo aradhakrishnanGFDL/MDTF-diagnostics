@@ -444,7 +444,7 @@ class SubprocessRuntimePODWrapper(object):
         execution (including setup and clean up).
         """
         chained_exc = util.chain_exc(exc, f"running {self.pod.full_name}.",
-            util.PodExecutionError)
+                                     util.PodExecutionError)
         self.pod.deactivate(chained_exc)
         self.tear_down()
         raise exc  # include in production, or just for debugging?
@@ -455,6 +455,8 @@ class SubprocessRuntimePODWrapper(object):
             if hasattr(self.process, 'retcode'):
                 retcode = self.process.returncode
             try:
+                log_str = f" Tearing down runtime process for {self.pod.full_name})."
+                self.pod.log.info(log_str)
                 self.process.kill()
             except ProcessLookupError:
                 pass
@@ -464,7 +466,11 @@ class SubprocessRuntimePODWrapper(object):
             if retcode == 0:
                 log_str = f"{self.pod.full_name} exited successfully (code={retcode})."
                 self.pod.log.info(log_str)
-            elif retcode is None or self.pod.failed:
+            elif retcode is None:
+                log_str = f"{self.pod.full_name} terminated, but the subprocess did not yield a return code." \
+                          f" This does not necessarily indicate a failure."
+                self.pod.log.info(log_str)
+            elif self.pod.failed:
                 log_str = f"{self.pod.full_name} was terminated or exited abnormally."
                 self.pod.log.info(log_str)
             else:
@@ -475,7 +481,7 @@ class SubprocessRuntimePODWrapper(object):
         if self.pod.log_file is not None:
             self.pod.log_file.write(80 * '-' + '\n')
             self.pod.log_file.write(log_str + '\n')
-            self.pod.log_file.flush() # redundant?
+            self.pod.log_file.flush()  # redundant?
 
         if not self.pod.failed:
             self.pod.status = core.ObjectStatus.INACTIVE
@@ -658,9 +664,11 @@ class MultirunSubprocessRuntimePODWrapper(object):
         out_file = os.path.join(self.pod.POD_WK_DIR, 'case_info.yaml')
         self.pod.pod_env_vars["case_env_file"] = out_file
         case_info = dict()
+
         for case_name, case in case_list.items():
             case_info[case_name] = {k: v
                                     for k, v in case.env_vars.items()}
+            
             # append case environment vars
             for v in case.iter_vars_only(case, active=True):
                 for kk, vv in v.env_vars.items():
@@ -670,10 +678,11 @@ class MultirunSubprocessRuntimePODWrapper(object):
                         case_info[case_name][kk] = v.dest_path
                     else:
                         case_info[case_name][kk] = vv
-        # write the case_info env vars to a yaml file that the POD will read
+        
         f = open(out_file, 'w+')
         assert (os.path.isfile(out_file))
         yaml.dump(case_info, f, allow_unicode=True, default_flow_style=False)
+        self.pod.multi_case_dict = case_info
 
     def setup_exception_handler(self, exc):
         chained_exc = util.chain_exc(exc, f"preparing to run {self.pod.full_name}.",
