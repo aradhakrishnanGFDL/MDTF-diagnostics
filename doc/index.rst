@@ -6,7 +6,7 @@
 Welcome to the documentation for the MDTF diagnostics!
 ======================================================
 
-.. figure:: img/CPO_MAPP_MDTF_Logo.jpg
+.. figure:: img/logo_MDTF.png
    :align: center
    :width: 100 %
 
@@ -20,8 +20,8 @@ This site contains documentation for the MDTF Diagnostics framework. The code is
    sphinx/pod_toc
    sphinx/site_toc
    sphinx/dev_toc
-   sphinx/ref_dev_toc
-   sphinx/fmwk_autodoc_toc
+   sphinx/tools_toc
+   sphinx/fmwk_toc
 
 
 Acknowledgements
@@ -40,5 +40,4 @@ Indices and tables
 ------------------
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`

@@ -18,6 +18,18 @@
       "positive": "down",
       "axis": "Z"
     },
+    "standard_hybrid_sigma": {
+      "standard_name": "atmosphere_hybrid_sigma_pressure_coordinate",
+      "units": "1",
+      "axis": "Z",
+      "positive": "down"
+    },
+    "lev": {
+      "standard_name": "depth",
+      "units": "m",
+      "positive": "down",
+      "axis": "Z"
+    },
     "time": {"axis": "T", "standard_name": "time", "units": "days"}
   },
   "aux_coords": {
@@ -82,7 +94,8 @@
       // CMIP6 equivalent = tas, temp at 2m ref height
       "standard_name": "air_temperature",
       "units": "K",
-      "ndim": 3
+      "ndim": 3,
+      "modifier": "atmos_height"
     },
     "ps": {
       "standard_name": "surface_air_pressure",

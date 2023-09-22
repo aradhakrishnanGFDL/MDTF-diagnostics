@@ -7,7 +7,8 @@
   "data_manager": {
     "GFDL_auto": {
       "help": "DataSource for accessing CMIP6 data stored on spinning disk at /uda/CMIP6.",
-      "entry_point": "sites.NOAA_GFDL.gfdl:GfdlautoDataManager",
+      "entry_point": ["sites.NOAA_GFDL.gfdl:GfdlAutoDataManager",
+                      "sites.NOAA_GFDL.gfdl_multirun:MultirunGfdlAutoDataManager"],
       "cli": {
         "arguments": [
           {
@@ -49,21 +50,27 @@
       }
     },
     "GFDL_PP": {
-      "help": "DataManager for working with input model data files that are already present on a local filesystem, for example the PODs' sample model data.",
-      "entry_point": "sites.NOAA_GFDL.gfdl:GfdlppDataManager",
+      "help": "DataSource for using timeseries data post-processed by GFDL's in-house FREPP tool, in structured /pp/ directory hierarchies. Data can be on any locally mounted filesystem.",
+      "entry_point": ["sites.NOAA_GFDL.gfdl:GfdlppDataManager",
+                      "sites.NOAA_GFDL.gfdl_multirun:MultirunGfdlppDataManager"],
       "cli": {
         "arguments": [
           {
-            "name": "any_components",
-            "help": "Set flag to permit PODs to use variables from multiple /pp/ model components. Variables will be chosen from the same component if possible.",
-            "default" : false
+            "name": "component",
+            "help" : "Name of the /pp/ model component to use. If omitted, PODs will search for variables from all model components that are present at runtime. Variables will be chosen from the same component if possible.",
+            "default": ""
+          },{
+            "name": "chunk_freq",
+            "help": "Length of each chunk of timeseries data. If not specified, the shortest available chunks will be used.",
+            "default" : ""
           }
         ]
       }
     },
     "CMIP6_UDA": {
       "help": "DataSource for accessing CMIP6 data stored on spinning disk at /uda/CMIP6.",
-      "entry_point": "sites.NOAA_GFDL.gfdl:Gfdludacmip6DataManager",
+      "entry_point": ["sites.NOAA_GFDL.gfdl:Gfdludacmip6DataManager",
+                      "sites.NOAA_GFDL.gfdl_multirun:MultirunGfdludacmip6DataManager"],
       "cli": {
         "arguments": [
           {
@@ -102,7 +109,8 @@
     },
     "CMIP6_archive": {
       "help": "DataSource for accessing more extensive set of CMIP6 data on DMF tape-backed storage at /archive/pcmdi/repo/CMIP6.",
-      "entry_point": "sites.NOAA_GFDL.gfdl:Gfdlarchivecmip6DataManager",
+      "entry_point": ["sites.NOAA_GFDL.gfdl:Gfdlarchivecmip6DataManager",
+                      "sites.NOAA_GFDL.gfdl_multirun:MultirunGfdlarchivecmip6DataManager"],
       "cli": {
         "arguments": [
           {
@@ -141,7 +149,8 @@
     },
     "CMIP6_data_cmip6": {
       "help": "DataSource for accessing pre-publication CMIP6 data on /data_cmip6.",
-      "entry_point": "sites.NOAA_GFDL.gfdl:Gfdldatacmip6DataManager",
+      "entry_point": ["sites.NOAA_GFDL.gfdl:Gfdldatacmip6DataManager",
+                      "sites.NOAA_GFDL.gfdl_multirun:MultirunGfdldatacmip6DataManager"],
       "cli": {
         "arguments": [
           {
@@ -188,20 +197,20 @@
           {
             "name": "conda_root",
             "help": "Path to the conda installation. Set equal to '' to use conda from your system's $PATH.",
-            "default" : "/home/mdteam/anaconda",
+            "default" : "/home/oar.gfdl.mdtf/miniconda3",
             "metavar" : "<DIR>",
             "action": "PathAction"
           },{
             "name": "conda_env_root",
             "help": "Root directory for conda environment installs. Set equal to '' to install in your system's default location.",
-            "default" : "/home/mdteam/DET/analysis/mdtf/MDTF-diagnostics/envs",
+            "default" : "/home/oar.gfdl.mdtf/miniconda3/envs",
             "metavar" : "<DIR>",
             "action": "PathAction"
           }
         ]
       }
     },
-    // Alias for "conda" above; defined for backwards compatibility. Will be removed.
+    // Duplicate/Alias for "conda" above; defined for backwards compatibility. Will be removed.
     "GFDL_conda": {
       "help": "Manages dependencies with Conda.",
       "entry_point": "sites.NOAA_GFDL.gfdl:GfdlcondaEnvironmentManager",
@@ -210,13 +219,13 @@
           {
             "name": "conda_root",
             "help": "Path to the conda installation. Set equal to '' to use conda from your system's $PATH.",
-            "default" : "/home/mdteam/anaconda",
+            "default" : "/home/oar.gfdl.mdtf/miniconda3",
             "metavar" : "<DIR>",
             "action": "PathAction"
           },{
             "name": "conda_env_root",
             "help": "Root directory for conda environment installs. Set equal to '' to install in your system's default location.",
-            "default" : "/home/mdteam/DET/analysis/mdtf/MDTF-diagnostics/envs",
+            "default" : "/home/oar.gfdl.mdtf/miniconda3/envs",
             "metavar" : "<DIR>",
             "action": "PathAction"
           }
@@ -248,7 +257,8 @@
   "output_manager": {
     "HTML": {
       "help": "",
-      "entry_point": "sites.NOAA_GFDL.gfdl:GFDLHTMLOutputManager",
+      "entry_point": ["sites.NOAA_GFDL.gfdl:GFDLHTMLOutputManager",
+                      "sites.NOAA_GFDL.gfdl_multirun:MultirunGFDLHTMLOutputManager"],
       "cli": {
         "arguments": [
           {
