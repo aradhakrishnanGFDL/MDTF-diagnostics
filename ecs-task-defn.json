@@ -1,0 +1,63 @@
+{
+    "taskDefinitionArn": "arn:aws:ecs:us-east-1:430073024411:task-definition/mdtf-test-a1r:25",
+    "containerDefinitions": [
+        {
+            "name": "mdtf-test-a1r",
+            "image": "public.ecr.aws/c6h4h4s8/mdtf/mdtf-test:latest",
+            "cpu": 0,
+            "portMappings": [],
+            "essential": true,
+            "environment": [],
+            "mountPoints": [],
+            "volumesFrom": [],
+            "logConfiguration": {
+                "logDriver": "awslogs",
+                "options": {
+                    "awslogs-group": "/ecs/mdtf-test-a1r",
+                    "awslogs-region": "us-east-1",
+                    "awslogs-stream-prefix": "ecs"
+                }
+            }
+        }
+    ],
+    "family": "mdtf-test-a1r",
+    "taskRoleArn": "arn:aws:iam::430073024411:role/ecsTaskExecutionRole",
+    "executionRoleArn": "arn:aws:iam::430073024411:role/ecsTaskExecutionRole",
+    "networkMode": "awsvpc",
+    "revision": 25,
+    "volumes": [],
+    "status": "ACTIVE",
+    "requiresAttributes": [
+        {
+            "name": "com.amazonaws.ecs.capability.logging-driver.awslogs"
+        },
+        {
+            "name": "ecs.capability.execution-role-awslogs"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.docker-remote-api.1.18"
+        },
+        {
+            "name": "ecs.capability.task-eni"
+        }
+    ],
+    "placementConstraints": [],
+    "compatibilities": [
+        "EC2",
+        "FARGATE"
+    ],
+    "requiresCompatibilities": [
+        "FARGATE"
+    ],
+    "cpu": "4096",
+    "memory": "8192",
+    "registeredAt": "2022-10-20T16:01:08.915Z",
+    "registeredBy": "arn:aws:iam::430073024411:user/a1r",
+    "tags": []
+}

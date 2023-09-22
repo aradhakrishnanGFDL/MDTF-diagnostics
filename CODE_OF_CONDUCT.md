@@ -63,7 +63,6 @@ Furthermore, our community members are expected to adhere to the following:
 Motivate yourself and your community by acknowledging and giving credit to the original source, be it an individual-or-group, data-or-code, an inception of an idea, and so on, in different project forums. Discourage miscredit to foster a welcoming, inclusive environment.
 We strive for the highest standards of scientific integrity. This includes sharing ideas and information, keeping accurate and complete records, and giving due credit to the contributions of others. Undisclosed conflicts of interest and scientific misconduct, including fabrication, falsification, and plagiarism, are incompatible with this code.
 
-
 ## Forms of harassment
 
 We do not tolerate harassment or bullying of any community member in any form. 
@@ -90,6 +89,7 @@ Forms of harassment include, but is not limited to:
 You can file a report by filling out [this form](https://forms.gle/Mx4WqA6A1NZunj9A6). 
 The online form gives you the option to keep your report anonymous or request that we follow up with you directly. While we cannot follow up on an anonymous report, we will take appropriate action.
 Some forms of harassment and discrimination may rise to the level where they cannot be addressed within the MDTF team, and must be reported to the relevant home institution(s). Home institution regulations supersede these guidelines where there are differences. Harassment procedures at some institutions require reporting to Title IX officers under certain circumstances.
+
 ##  Review
 
 This code of conduct document will be reviewed periodically on annual basis by the Model Diagnostics Task Force leads team members. 
@@ -107,6 +107,7 @@ This Code of Conduct has been adapted from:
    * Pangeo (https://github.com/pangeo-data/.github/blob/main/CODE_OF_CONDUCT.md)
    * The chemical professionals code of conduct (https://www.acs.org/content/acs/en/careers/career-services/ethics/the-chemical-professionals-code-of-conduct.html)
    * GFDL DEIAC forum
-We are grateful to these projects for contributing these materials for us to easily reuse.
 
+
+We are grateful to these projects for contributing these materials for us to easily reuse.
 
