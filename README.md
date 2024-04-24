@@ -295,4 +295,5 @@ used in any manner to imply endorsement of any commercial product or activity by
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
-[![All Contributors](https://img.shields.io/github/all-contributors/NOAA-GFDL/MDTF-diagnostics?color=ee8449&style=flat-square)](#contributors)
+[![All Contributors](https://img.shields.io/github/aradhakrishnanGFDL/MDTF-diagnostics/all-contributors?color=ee8449&style=flat-square)](#contributors-)
+
