@@ -284,3 +284,14 @@ Federal law. Any reference to specific commercial products, processes, or servic
 manufacturer, or otherwise, does not constitute or imply their endorsement, recommendation or favoring by the
 Department of Commerce. The Department of Commerce seal and logo, or the seal and logo of a DOC bureau, shall not be
 used in any manner to imply endorsement of any commercial product or activity by DOC or the United States Government.
+
+## Contributors
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
