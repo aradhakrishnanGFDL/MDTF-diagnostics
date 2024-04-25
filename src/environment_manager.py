@@ -148,19 +148,11 @@ class CondaEnvironmentManager(AbstractEnvironmentManager):
             cmd = f"{self.conda_dir}/conda_init.sh {config.conda_root}"
 
         try:
-            conda_info = util.run_shell_command(
-                cmd,
-                log=log
-            )
-            for line in conda_info:
-                key, val = line.split('=')
-                if key == '_CONDA_EXE':
-                    self.conda_exe = val
-                    assert os.path.exists(self.conda_exe)
-                elif key == '_CONDA_ROOT':
-                    self.conda_root = val
+                print('Looking for micromamba') 
+                self.conda_exe = 'micromamba'
+                self.conda_root = '/opt/conda' 
         except Exception as exc:
-            raise util.PodRuntimeError("Can't find conda.") from exc
+                raise util.PodRuntimeError("Can't find conda.") from exc
 
         # find where environments are installed
         self.conda_env_root = config.conda_env_root
@@ -234,17 +226,6 @@ class CondaEnvironmentManager(AbstractEnvironmentManager):
         # conda_init for bash defines conda as a shell function; will get error
         # if we try to call the conda executable directly
         conda_prefix = os.path.join(self.conda_env_root, env_name)
-        if os.path.split(self.conda_exe)[-1] == 'micromamba':
-            return [
-                f'source {self.conda_dir}/micromamba_init.sh --micromamba_exe {self.conda_exe}'
-                f' --micromamba_root {self.conda_root}',
-                f'micromamba activate {conda_prefix}'
-            ]
-        else:
-            return [
-                f'source {self.conda_dir}/conda_init.sh {self.conda_root}',
-                f'conda activate {conda_prefix}'
-            ]
 
     def deactivate_env_commands(self, env_name):
         return []
@@ -279,9 +260,6 @@ class SubprocessRuntimePODWrapper:
     env: typing.Any = None
     env_vars: dict = dataclasses.field(default_factory=dict)
     process: typing.Any = dataclasses.field(default=None, init=False)
-
-    def __init__(self, pod):
-        self.pod = pod
 
     def set_pod_env_vars(self, pod, cases: dict):
         """Sets all environment variables for the POD: paths and names of each
