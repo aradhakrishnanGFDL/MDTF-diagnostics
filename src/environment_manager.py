@@ -162,7 +162,7 @@ class CondaEnvironmentManager(AbstractEnvironmentManager):
                 elif key == '_CONDA_ROOT':
                     self.conda_root = val
         except Exception as exc:
-            raise util.PodRuntimeError("Can't find conda.") from exc
+                raise util.PodRuntimeError("Can't find conda.") from exc
 
         # find where environments are installed
         self.conda_env_root = config.conda_env_root
@@ -281,7 +281,7 @@ class SubprocessRuntimePODWrapper:
     env: typing.Any = None
     env_vars: dict = dataclasses.field(default_factory=dict)
     process: typing.Any = dataclasses.field(default=None, init=False)
-
+      
     def __init__(self, pod):
         self.pod = pod
 
